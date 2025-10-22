@@ -6,9 +6,6 @@ import { registerSW } from "virtual:pwa-register";
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
-import "@mantine/core/styles.css";
-import "@mantine/dates/styles.css";
-import { MantineProvider } from "@mantine/core";
 
 // Create a new router instance
 const router = createRouter({ routeTree });
@@ -33,9 +30,7 @@ const updateSW = registerSW({
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <MantineProvider>
-        <RouterProvider router={router} />
-      </MantineProvider>
+      <RouterProvider router={router} />
     </QueryClientProvider>
   </React.StrictMode>
 );

@@ -1,0 +1,38 @@
+import { create } from 'zustand';
+
+interface HealthyEaterStore {
+    status: string;
+    setStatus: (status: string) => void;
+    level: number;
+    setLevel: (level: number) => void;
+    health: number;
+    setHealth: (health: number) => void;
+    onHit: () => void;
+    onEat: () => void;
+    foodLeft: number;
+    setFoodLeft: (foodLeft: number) => void;
+}
+
+export const useHealthyEaterStore = create<HealthyEaterStore>()((set, get) => ({
+    status: 'idle',
+    setStatus: (status: string) => set({ status }),
+    level: 1,
+    setLevel: (level: number) => set({ level }),
+    health: 100,
+    setHealth: (health: number) => set({ health }),
+    onHit: () => {
+        const currentHealth = get().health;
+        set({ health: Math.max(0, currentHealth - 10) });
+    },
+    onEat: () => {
+        const { health, foodLeft } = get();
+        if (foodLeft > 0) {
+            set({
+                health: Math.min(100, health + 5),
+                foodLeft: foodLeft - 1
+            });
+        }
+    },
+    foodLeft: 0,
+    setFoodLeft: (foodLeft: number) => set({ foodLeft })
+}));
