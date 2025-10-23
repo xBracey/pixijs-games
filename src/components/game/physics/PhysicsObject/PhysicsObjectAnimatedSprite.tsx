@@ -53,7 +53,18 @@ const PhysicsObjectAnimatedSprite = ({ id, initialRect, animatedSprite, textureP
         }
     }, [paused]);
 
-    return <pixiAnimatedSprite {...animatedSprite} ref={spriteRef} x={x} y={y} width={w} height={h} anchor={0} textures={textures} />;
+    return (
+        <pixiAnimatedSprite
+            {...animatedSprite}
+            ref={spriteRef}
+            x={x + w / 2}
+            y={y + h / 2}
+            width={w}
+            height={h}
+            anchor={0.5}
+            textures={textures}
+        />
+    );
 };
 
 export default PhysicsObjectAnimatedSprite;

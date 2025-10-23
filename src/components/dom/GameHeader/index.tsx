@@ -7,9 +7,10 @@ interface IGameHeader {
     title: string;
     children: React.ReactNode;
     menu?: React.ReactNode;
+    isPlaying: boolean;
 }
 
-const GameHeader = ({ title, children, menu }: IGameHeader) => {
+const GameHeader = ({ title, children, menu, isPlaying }: IGameHeader) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const toggleMenu = () => {
@@ -38,7 +39,11 @@ const GameHeader = ({ title, children, menu }: IGameHeader) => {
             )}
 
             {/* Header */}
-            <header className="relative flex h-[80px] items-center justify-between bg-gray-900 px-4 text-white">
+            <header
+                className={`relative flex h-[80px] items-center justify-between bg-gray-900 px-4 text-white transition-opacity duration-500 ease-in-out ${
+                    isPlaying ? 'opacity-0 hover:opacity-100' : ''
+                }`}
+            >
                 {/* Left: Burger Menu */}
                 <div className="absolute left-4 flex items-center">
                     {menu && (
@@ -55,7 +60,7 @@ const GameHeader = ({ title, children, menu }: IGameHeader) => {
 
                 {/* Right: Title and Back Button */}
                 <div className="absolute right-4 flex items-center gap-2">
-                    <h1 className="text-lg font-bold">{title}</h1>
+                    <h1 className="w-32 text-center text-sm font-bold">{title}</h1>
                     <Link to="/">
                         <Button>Home</Button>
                     </Link>

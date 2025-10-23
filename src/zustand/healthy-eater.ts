@@ -10,7 +10,12 @@ interface HealthyEaterStore {
     onHit: () => void;
     onEat: () => void;
     foodLeft: number;
-    setFoodLeft: (foodLeft: number) => void;
+    setFoodLeft: (foodLeft: number | ((prev: number) => number)) => void;
+    foodActive: number[];
+    setFoodActive: (foodActive: number[] | ((prev: number[]) => number[])) => void;
+    removeFoodActive: (id: number) => void;
+    levelStartTimestamp: number | null;
+    setLevelStartTimestamp: (timestamp: number | null) => void;
 }
 
 export const useHealthyEaterStore = create<HealthyEaterStore>()((set, get) => ({
@@ -28,11 +33,25 @@ export const useHealthyEaterStore = create<HealthyEaterStore>()((set, get) => ({
         const { health, foodLeft } = get();
         if (foodLeft > 0) {
             set({
-                health: Math.min(100, health + 5),
+                health: Math.min(100, health + 10),
                 foodLeft: foodLeft - 1
             });
         }
     },
     foodLeft: 0,
-    setFoodLeft: (foodLeft: number) => set({ foodLeft })
+    setFoodLeft: (foodLeft: number | ((prev: number) => number)) =>
+        set((state) => ({
+            foodLeft: typeof foodLeft === 'function' ? foodLeft(state.foodLeft) : foodLeft
+        })),
+    foodActive: [],
+    setFoodActive: (foodActive: number[] | ((prev: number[]) => number[])) =>
+        set((state) => ({
+            foodActive: typeof foodActive === 'function' ? foodActive(state.foodActive) : foodActive
+        })),
+    removeFoodActive: (id: number) =>
+        set((state) => ({
+            foodActive: state.foodActive.filter((activeId) => activeId !== id)
+        })),
+    levelStartTimestamp: null,
+    setLevelStartTimestamp: (timestamp: number | null) => set({ levelStartTimestamp: timestamp })
 }));

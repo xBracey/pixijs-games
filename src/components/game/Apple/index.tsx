@@ -1,24 +1,40 @@
+import { useTick } from '@pixi/react';
 import { Pixi } from '../../../utils/Pixi';
 import { useWorldStore } from '../../../zustand/world';
-import { useMovement } from '../../../utils/useMovement';
 import PhysicsObjectSprite from '../physics/PhysicsObject/PhysicsObjectSprite';
+import { useRef, useEffect, useCallback } from 'react';
 
 const idPrefix = 'apple';
 
 interface IApple {
-    id: string;
+    id: string | number;
     x: number;
     y: number;
+    onAte: () => void;
 }
 
-const Apple = ({ id, x, y }: IApple) => {
+const Apple = ({ id, x, y, onAte }: IApple) => {
+    const hasSpawned = useRef(false);
     const initialRect = { x, y, h: 32, w: 32 };
     const { rects } = useWorldStore();
-    const rect = rects[id] ?? initialRect;
+    const fullId = idPrefix + id;
+    const rect = rects[fullId] ?? initialRect;
 
-    useMovement(id, 2);
+    useEffect(() => {
+        if (rects[fullId]) {
+            hasSpawned.current = true;
+        }
+    }, [rects[fullId]]);
 
-    return <PhysicsObjectSprite id={idPrefix + id} initialRect={rect} sprite={{ anchor: 0.5, eventMode: 'static' }} textureName="apple" />;
+    const checkIfAte = useCallback(() => {
+        if (!rects[fullId] && hasSpawned.current) {
+            onAte();
+        }
+    }, [rects[fullId]]);
+
+    useTick(checkIfAte);
+
+    return <PhysicsObjectSprite id={fullId} initialRect={rect} sprite={{ eventMode: 'static' }} textureName="apple" />;
 };
 
 const AppleWrapped = (props: IApple) => (

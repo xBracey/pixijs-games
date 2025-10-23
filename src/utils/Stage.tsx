@@ -38,7 +38,6 @@ export function Stage({ stageProps, children }: { stageProps: ComponentProps<typ
 
     return (
         <div className="flex h-screen w-screen items-center justify-center bg-gray-600">
-            {/* Debug Button */}
             <button
                 onClick={() => setShowDebug(!showDebug)}
                 className="fixed right-4 top-4 z-50 rounded bg-blue-600 px-3 py-2 text-white transition-colors hover:bg-blue-700"

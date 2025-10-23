@@ -9,6 +9,7 @@ interface WorldStore {
     resetWorld: () => void;
     rects: { [id: string]: IRect };
     setRect: (id: string, rect: IRect) => void;
+    removeRect: (id: string) => void;
 }
 
 export const useWorldStore = create<WorldStore>((set, get) => ({
@@ -21,5 +22,10 @@ export const useWorldStore = create<WorldStore>((set, get) => ({
     setRect: (id: string, rect: IRect) => {
         const currentRects = get().rects;
         return set({ rects: { ...currentRects, [id]: rect } });
+    },
+    removeRect: (id: string) => {
+        const currentRects = get().rects;
+        const { [id]: removed, ...remainingRects } = currentRects;
+        return set({ rects: remainingRects });
     }
 }));

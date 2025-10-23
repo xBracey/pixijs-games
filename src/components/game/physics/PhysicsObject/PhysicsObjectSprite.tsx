@@ -10,7 +10,7 @@ interface IPhysicsObject {
     id: string;
     initialRect: IRect;
     sprite: Omit<PixiReactElementProps<typeof Sprite>, 'texture'>;
-    textureName: string;
+    textureName?: string;
 }
 
 const PhysicsObjectSprite = ({ id, initialRect, sprite, textureName }: IPhysicsObject) => {
@@ -21,7 +21,7 @@ const PhysicsObjectSprite = ({ id, initialRect, sprite, textureName }: IPhysicsO
     const [texture, setTexture] = useState<Texture>(Texture.EMPTY);
 
     const loadTexture = useCallback(async () => {
-        if (texture === Texture.EMPTY) {
+        if (texture === Texture.EMPTY && textureName) {
             const newTexture = await Assets.load(`/assets/${textureName}/0001.png`);
             setTexture(newTexture);
         }
