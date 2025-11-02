@@ -17,7 +17,7 @@ export const useWorldStore = create<WorldStore>((set, get) => ({
     paused: false,
     setPaused: (paused: boolean) => set({ paused }),
     setWorld: (world: World) => set({ world }),
-    resetWorld: () => set({ world: Bump.newWorld(64) }),
+    resetWorld: () => set({ world: Bump.newWorld(64), rects: {} }),
     rects: {},
     setRect: (id: string, rect: IRect) => {
         const currentRects = get().rects;

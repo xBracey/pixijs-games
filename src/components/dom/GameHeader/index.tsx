@@ -18,7 +18,7 @@ const GameHeader = ({ title, children, menu, isPlaying }: IGameHeader) => {
     };
 
     return (
-        <Html.In>
+        <div>
             {/* Overlay */}
             {menu && isMenuOpen && <div className="fixed inset-0 z-40 bg-black bg-opacity-50" onClick={() => setIsMenuOpen(false)} />}
 
@@ -66,7 +66,7 @@ const GameHeader = ({ title, children, menu, isPlaying }: IGameHeader) => {
                     </Link>
                 </div>
             </header>
-        </Html.In>
+        </div>
     );
 };
 

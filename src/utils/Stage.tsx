@@ -6,6 +6,7 @@ import { height as mapHeight, width as mapWidth } from './map';
 import { Html } from './Html';
 import { initDevtools } from '@pixi/devtools';
 import WorldOverlay from '../components/dom/WorldOverlay';
+import { HtmlBackground } from './HtmlBackground';
 
 export function Stage({ stageProps, children }: { stageProps: ComponentProps<typeof Application>; children: ReactNode }) {
     const stageRef = useRef<ApplicationRef>(null);
@@ -45,14 +46,18 @@ export function Stage({ stageProps, children }: { stageProps: ComponentProps<typ
                 {showDebug ? 'Hide Debug' : 'Show Debug'}
             </button>
 
-            <div style={{ transform: `scale(${scale})` }}>
-                <div className="fixed inset-0">
+            <div style={{ transform: `scale(${scale})`, height: mapHeight, width: mapWidth }}>
+                <div className="absolute inset-0 z-[5]">
+                    <HtmlBackground.Out />
+                </div>
+
+                <div className="absolute inset-0 z-20">
                     {children}
                     {showDebug && <WorldOverlay />}
                     <Html.Out />
                 </div>
 
-                <Application {...stageProps} ref={stageRef}>
+                <Application {...stageProps} ref={stageRef} className="absolute inset-0 z-10">
                     <Pixi.Out />
                 </Application>
             </div>

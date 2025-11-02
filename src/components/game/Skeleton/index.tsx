@@ -5,70 +5,43 @@ import { useWorldStore } from '../../../zustand/world';
 import { useMovement } from '../../../utils/useMovement';
 import { IRect } from 'bump-ts';
 import { useHealthyEaterStore } from '../../../zustand/healthy-eater';
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import HealthBar from '../../dom/HealthBar';
+import { useSpriteRotation } from '../../../utils/useSpriteRotation';
 
 const id = 'skeleton';
 const initialRect = { x: 200, y: 200, h: 64, w: 64 };
 
 const Skeleton = () => {
     const { world, rects, removeRect } = useWorldStore();
-    const { health, onEat } = useHealthyEaterStore();
+    const { health, onEat, onHit } = useHealthyEaterStore();
 
     const rect = rects[id] ?? initialRect;
 
     const onMove = useCallback(
         (rect: IRect, deltaX: number, deltaY: number) => {
             const { collisions } = world.move(id, rect.x + deltaX, rect.y + deltaY, (_, newItem) =>
-                newItem.startsWith('apple') ? 'touch' : 'bounce'
+                newItem.startsWith('apple') || newItem.startsWith('arrow') ? 'cross' : 'bounce'
             );
 
-            if (collisions.length > 0) {
-                const itemCollision = collisions[0];
-
+            collisions.forEach((itemCollision) => {
                 if (itemCollision.other.startsWith('apple')) {
                     world.remove(itemCollision.other);
                     removeRect(itemCollision.other);
                     onEat();
                 }
-            }
+                if (itemCollision.other.startsWith('arrow')) {
+                    world.remove(itemCollision.other);
+                    removeRect(itemCollision.other);
+                    onHit();
+                }
+            });
         },
         [world, removeRect]
     );
 
-    const movementDirection = useMovement(id, 4, onMove);
-
-    const spriteTransform = useMemo(() => {
-        switch (movementDirection) {
-            case 'left':
-                // Default orientation (sprite is facing left)
-                return { rotation: 0, scaleX: 1, scaleY: 1 };
-            case 'right':
-                // Flip horizontally by scaling X axis by -1
-                return { rotation: 0, scaleX: -1, scaleY: 1 };
-            case 'up':
-                // Rotate 90 degrees counter-clockwise (to face up)
-                return { rotation: Math.PI / 2, scaleX: 1, scaleY: 1 };
-            case 'down':
-                // Rotate 90 degrees clockwise (to face down)
-                return { rotation: -Math.PI / 2, scaleX: 1, scaleY: 1 };
-            case 'up-left':
-                // Rotate 45 degrees counter-clockwise
-                return { rotation: Math.PI / 4, scaleX: 1, scaleY: 1 };
-            case 'up-right':
-                // Flip horizontally and rotate 45 degrees clockwise
-                return { rotation: -Math.PI / 4, scaleX: -1, scaleY: 1 };
-            case 'down-left':
-                // Rotate 45 degrees clockwise
-                return { rotation: -Math.PI / 4, scaleX: 1, scaleY: 1 };
-            case 'down-right':
-                // Flip horizontally and rotate 45 degrees counter-clockwise
-                return { rotation: Math.PI / 4, scaleX: -1, scaleY: 1 };
-            default:
-                // Idle - keep default orientation
-                return { rotation: 0, scaleX: 1, scaleY: 1 };
-        }
-    }, [movementDirection]);
+    const movementDirection = useMovement(id, 6, onMove);
+    const spriteTransform = useSpriteRotation(movementDirection);
 
     return (
         <>

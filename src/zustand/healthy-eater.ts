@@ -14,9 +14,19 @@ interface HealthyEaterStore {
     foodActive: number[];
     setFoodActive: (foodActive: number[] | ((prev: number[]) => number[])) => void;
     removeFoodActive: (id: number) => void;
+    arrowsActive: number[];
+    setArrowsActive: (arrowsActive: number[] | ((prev: number[]) => number[])) => void;
+    removeArrowsActive: (id: number) => void;
     levelStartTimestamp: number | null;
     setLevelStartTimestamp: (timestamp: number | null) => void;
 }
+
+const defaultResetValues: Partial<HealthyEaterStore> = {
+    foodActive: [],
+    foodLeft: 0,
+    arrowsActive: [],
+    levelStartTimestamp: null
+};
 
 export const useHealthyEaterStore = create<HealthyEaterStore>()((set, get) => ({
     status: 'idle',
@@ -27,14 +37,23 @@ export const useHealthyEaterStore = create<HealthyEaterStore>()((set, get) => ({
     setHealth: (health: number) => set({ health }),
     onHit: () => {
         const currentHealth = get().health;
-        set({ health: Math.max(0, currentHealth - 10) });
+        if (currentHealth < 30) {
+            set({ health: 0, status: 'gameOver', level: 1, ...defaultResetValues });
+        }
+        set({ health: Math.max(0, currentHealth - 30) });
     },
     onEat: () => {
-        const { health, foodLeft } = get();
-        if (foodLeft > 0) {
+        const { health, level, foodActive, foodLeft } = get();
+        console.log(foodLeft, foodActive);
+        if (foodActive.length <= 1 && foodLeft === 0) {
             set({
-                health: Math.min(100, health + 10),
-                foodLeft: foodLeft - 1
+                level: level + 1,
+                status: 'nextLevel',
+                ...defaultResetValues
+            });
+        } else {
+            set({
+                health: Math.min(100, health + 10)
             });
         }
     },
@@ -51,6 +70,15 @@ export const useHealthyEaterStore = create<HealthyEaterStore>()((set, get) => ({
     removeFoodActive: (id: number) =>
         set((state) => ({
             foodActive: state.foodActive.filter((activeId) => activeId !== id)
+        })),
+    arrowsActive: [],
+    setArrowsActive: (arrowsActive: number[] | ((prev: number[]) => number[])) =>
+        set((state) => ({
+            arrowsActive: typeof arrowsActive === 'function' ? arrowsActive(state.arrowsActive) : arrowsActive
+        })),
+    removeArrowsActive: (id: number) =>
+        set((state) => ({
+            arrowsActive: state.arrowsActive.filter((activeId) => activeId !== id)
         })),
     levelStartTimestamp: null,
     setLevelStartTimestamp: (timestamp: number | null) => set({ levelStartTimestamp: timestamp })

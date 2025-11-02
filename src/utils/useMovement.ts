@@ -3,7 +3,8 @@ import { useTick } from '@pixi/react';
 import { useWorldStore } from '../zustand/world';
 import { IRect } from 'bump-ts';
 
-export type MovementDirection = 'left' | 'right' | 'up' | 'down' | 'up-left' | 'up-right' | 'down-left' | 'down-right';
+export type MovementBasicDirection = 'left' | 'right' | 'up' | 'down';
+export type MovementDirection = MovementBasicDirection | 'up-left' | 'up-right' | 'down-left' | 'down-right';
 
 export const useMovement = (
     id: string,
