@@ -1,6 +1,12 @@
 import { create } from 'zustand';
 import Bump, { IRect, World } from 'bump-ts';
 
+interface IScreen {
+    scale: number;
+    x: number;
+    y: number;
+}
+
 interface WorldStore {
     world: World;
     paused: boolean;
@@ -10,6 +16,8 @@ interface WorldStore {
     rects: { [id: string]: IRect };
     setRect: (id: string, rect: IRect) => void;
     removeRect: (id: string) => void;
+    screen: IScreen;
+    setScreen: (screen: IScreen) => void;
 }
 
 export const useWorldStore = create<WorldStore>((set, get) => ({
@@ -27,5 +35,7 @@ export const useWorldStore = create<WorldStore>((set, get) => ({
         const currentRects = get().rects;
         const { [id]: removed, ...remainingRects } = currentRects;
         return set({ rects: remainingRects });
-    }
+    },
+    screen: { scale: 1, x: 0, y: 0 },
+    setScreen: (screen: IScreen) => set({ screen })
 }));

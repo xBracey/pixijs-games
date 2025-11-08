@@ -1,21 +1,28 @@
 import React, { useState } from 'react';
 import { Link } from '@tanstack/react-router';
 import Button from '../Button';
-import { Html } from '../../../utils/Html';
+import { twMerge } from 'tailwind-merge';
 
 interface IGameHeader {
     title: string;
     children: React.ReactNode;
     menu?: React.ReactNode;
     isPlaying: boolean;
+    bgColor?: string;
 }
 
-const GameHeader = ({ title, children, menu, isPlaying }: IGameHeader) => {
+const GameHeader = ({ title, children, menu, isPlaying, bgColor }: IGameHeader) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
+
+    const headerBaseClass = `relative flex h-[80px] items-center justify-between bg-gray-900 px-4 text-white transition-opacity duration-500 ease-in-out ${
+        isPlaying ? 'opacity-0 hover:opacity-100' : ''
+    }`;
+
+    const headerMenuClassName = twMerge(headerBaseClass, bgColor);
 
     return (
         <div>
@@ -39,11 +46,7 @@ const GameHeader = ({ title, children, menu, isPlaying }: IGameHeader) => {
             )}
 
             {/* Header */}
-            <header
-                className={`relative flex h-[80px] items-center justify-between bg-gray-900 px-4 text-white transition-opacity duration-500 ease-in-out ${
-                    isPlaying ? 'opacity-0 hover:opacity-100' : ''
-                }`}
-            >
+            <header className={headerMenuClassName}>
                 {/* Left: Burger Menu */}
                 <div className="absolute left-4 flex items-center">
                     {menu && (

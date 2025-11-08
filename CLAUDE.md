@@ -45,3 +45,51 @@ The app is configured as a Progressive Web App with Vite PWA plugin, including s
 - **Ladle** for component development (alternative to Storybook)
 - **TanStack Router DevTools** for routing debugging
 - **Prettier** with TailwindCSS plugin for code formatting
+
+## Adding a New Game
+
+To add a new game to the repository, follow these steps:
+
+### 1. Create Game Component
+Create a new game directory in `src/games/[GameName]/`:
+```
+src/games/[GameName]/
+├── index.tsx          # Main game component
+├── index.stories.tsx  # Ladle story for component development
+└── [other-files].ts   # Game-specific utilities (e.g., calculations, helpers)
+```
+
+**Game Component Structure:**
+- Import required components: `Button`, `GameHeader`, game-specific zustand store, `useWorldStore`
+- Use `HtmlBackground.In` for background styling
+- Include `GameHeader` with game title and control buttons
+- Handle game states: `idle`, `playing`, `paused`, `gameOver`
+- Implement level transitions with `showLevelTransition` state
+- Reset world state when game status changes
+
+### 2. Create Zustand Store
+Create a zustand store in `src/zustand/[game-name].ts`:
+- Define game-specific state interface
+- Include common game states: `status`, `level`, `score`, etc.
+- Add game-specific state (e.g., `lives`, `targetsHit`, `penguinsThrown`)
+- Implement `resetGame()` function to reset to default values
+- Use functional updates for state that can be incremented
+
+### 3. Create Route
+Create a lazy route in `src/routes/games/[game-name].lazy.tsx`:
+- Import the game component
+- Use `createLazyFileRoute` with the game path
+- Export the route with the component
+
+### 4. Add Navigation Link
+Update `src/pages/Home/index.tsx`:
+- Add a new `Button` with `Link` component pointing to the game route
+- Follow the existing pattern for consistent styling
+
+### 5. Optional: Create Ladle Story
+Include an `index.stories.tsx` file for component development:
+- Export default story configuration with title `Games / [GameName]`
+- Export `Default` story that renders the game component
+
+### Example Implementation
+See `src/games/PenguinThrower/` and `src/zustand/penguin-thrower.ts` for a complete example following this pattern.

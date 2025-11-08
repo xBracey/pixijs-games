@@ -7,12 +7,15 @@ import { Html } from './Html';
 import { initDevtools } from '@pixi/devtools';
 import WorldOverlay from '../components/dom/WorldOverlay';
 import { HtmlBackground } from './HtmlBackground';
+import { useWorldStore } from '../zustand/world';
 
 export function Stage({ stageProps, children }: { stageProps: ComponentProps<typeof Application>; children: ReactNode }) {
     const stageRef = useRef<ApplicationRef>(null);
+    const mainDivRef = useRef<HTMLDivElement>(null);
     const hasInitDevTools = useRef(false);
     const { width, height } = useWindowSize();
     const [showDebug, setShowDebug] = useState(false);
+    const { setScreen } = useWorldStore();
 
     useEffect(() => {
         if (!stageRef.current) return;
@@ -37,6 +40,42 @@ export function Stage({ stageProps, children }: { stageProps: ComponentProps<typ
         return Math.min(width / mapWidth, height / mapHeight);
     }, [width, height]);
 
+    useEffect(() => {
+        const updateScreen = () => {
+            if (!mainDivRef.current) return;
+            
+            const rect = mainDivRef.current.getBoundingClientRect();
+            setScreen({
+                scale,
+                x: rect.left,
+                y: rect.top
+            });
+        };
+
+        updateScreen();
+
+        const resizeObserver = new ResizeObserver(updateScreen);
+        const mutationObserver = new MutationObserver(updateScreen);
+
+        if (mainDivRef.current) {
+            resizeObserver.observe(mainDivRef.current);
+            mutationObserver.observe(mainDivRef.current, {
+                attributes: true,
+                attributeFilter: ['style', 'class']
+            });
+        }
+
+        window.addEventListener('scroll', updateScreen);
+        window.addEventListener('resize', updateScreen);
+
+        return () => {
+            resizeObserver.disconnect();
+            mutationObserver.disconnect();
+            window.removeEventListener('scroll', updateScreen);
+            window.removeEventListener('resize', updateScreen);
+        };
+    }, [scale, setScreen]);
+
     return (
         <div className="flex h-screen w-screen items-center justify-center bg-gray-600">
             <button
@@ -46,7 +85,7 @@ export function Stage({ stageProps, children }: { stageProps: ComponentProps<typ
                 {showDebug ? 'Hide Debug' : 'Show Debug'}
             </button>
 
-            <div style={{ transform: `scale(${scale})`, height: mapHeight, width: mapWidth }}>
+            <div id="main" ref={mainDivRef} style={{ transform: `scale(${scale})`, height: mapHeight, width: mapWidth }}>
                 <div className="absolute inset-0 z-[5]">
                     <HtmlBackground.Out />
                 </div>

@@ -1,0 +1,14 @@
+.PenguinThrowerContainer {
+    @apply relative;
+}
+
+.PenguinThrowerContainer h1,
+.PenguinThrowerContainer h2,
+.PenguinThrowerContainer h3,
+.PenguinThrowerContainer h4,
+.PenguinThrowerContainer h5,
+.PenguinThrowerContainer h6,
+.PenguinThrowerContainer div,
+.PenguinThrowerContainer p {
+    font-family: 'Silkscreen', 'Press Start 2P', cursive;
+}
