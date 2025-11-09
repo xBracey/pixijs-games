@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useTick } from '@pixi/react';
-import { useWorldStore } from '../zustand/world';
+import { useWorldStore } from '../utils/world';
 
 interface GravityState {
     velocityY: number;

@@ -1,18 +1,19 @@
 import { useState, useEffect, useCallback } from 'react';
-import Button from '../../components/dom/Button';
-import GameHeader from '../../components/dom/GameHeader';
-import { usePenguinThrowerStore } from '../../zustand/penguin-thrower';
-import { useWorldStore } from '../../zustand/world';
-import { HtmlBackground } from '../../utils/HtmlBackground';
-import { height, width } from '../../utils/map';
 import styles from './index.module.css';
-import Border from '../../components/game/Border';
-import Penguin from '../../components/game/Penguin';
+import { usePenguinThrowerStore } from './store';
+import { useWorldStore } from '@utils/world';
+import { HtmlBackground } from '@utils/tunnel';
+import GameHeader from '@dom/GameHeader';
+import Button from '@dom/Button';
+import Border from '@game/Border';
+import Penguin from './components/Penguin';
 
 const PenguinThrower = () => {
     const { status, setStatus, score, mapLeft, resetGame } = usePenguinThrowerStore();
     const { paused, setPaused, resetWorld } = useWorldStore();
     const [showLevelTransition, setShowLevelTransition] = useState(false);
+    const { map } = useWorldStore();
+    const { width, height } = map;
 
     const onGameStart = useCallback(() => {
         setShowLevelTransition(false);

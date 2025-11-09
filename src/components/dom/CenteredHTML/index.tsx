@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import { Html } from '../../../utils/Html';
 import { IRect } from 'bump-ts';
+import { Html } from '@utils/tunnel';
 
 interface ICenteredHTML {
     rect: IRect;

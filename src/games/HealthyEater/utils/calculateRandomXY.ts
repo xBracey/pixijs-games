@@ -1,6 +1,4 @@
-import { height as mapHeight, width as mapWidth } from '../../utils/map';
-
-export const calculateRandomXY = (id: number, levelStartTimestamp: number) => {
+export const calculateRandomXY = (id: number, levelStartTimestamp: number, mapWidth: number, mapHeight: number) => {
     // Create a pseudo-random seed by combining timestamp and id
     const seed = (levelStartTimestamp % 20000) + id * 12345;
     const seed2 = (levelStartTimestamp % 20000) + id * 54321;

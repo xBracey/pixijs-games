@@ -1,13 +1,13 @@
-import CenteredHTML from '../../dom/CenteredHTML';
-import { Pixi } from '../../../utils/Pixi';
-import PhysicsObjectAnimatedSprite from '../physics/PhysicsObject/PhysicsObjectAnimatedSprite';
-import { useWorldStore } from '../../../zustand/world';
-import { useMovement } from '../../../utils/useMovement';
+import { useWorldStore } from '@utils/world';
 import { IRect } from 'bump-ts';
-import { useHealthyEaterStore } from '../../../zustand/healthy-eater';
 import { useCallback } from 'react';
-import HealthBar from '../../dom/HealthBar';
-import { useSpriteRotation } from '../../../utils/useSpriteRotation';
+import { useHealthyEaterStore } from '../../store';
+import { useMovement } from '@hooks/useMovement';
+import { useSpriteRotation } from '@hooks/useSpriteRotation';
+import PhysicsObjectAnimatedSprite from '@physics/PhysicsObjectAnimatedSprite';
+import CenteredHTML from '@dom/CenteredHTML';
+import HealthBar from '../HealthBar';
+import { Pixi } from '@utils/tunnel';
 
 const id = 'skeleton';
 const initialRect = { x: 200, y: 200, h: 64, w: 64 };

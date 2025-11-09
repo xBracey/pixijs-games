@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { extend, useTick } from '@pixi/react';
 import { IRect } from 'bump-ts';
 import { AnimatedSprite, Sprite } from 'pixi.js';
-import { useWorldStore } from '../../../../zustand/world';
+import { useWorldStore } from '@utils/world';
 
 extend({ Sprite, AnimatedSprite });
 

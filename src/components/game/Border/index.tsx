@@ -1,6 +1,6 @@
-import { Pixi } from '../../../utils/Pixi';
-import PhysicsObjectSprite from '../physics/PhysicsObject/PhysicsObjectSprite';
-import { height as mapHeight, width as mapWidth } from '../../../utils/map';
+import PhysicsObjectSprite from '@physics/PhysicsObjectSprite';
+import { Pixi } from '@utils/tunnel';
+import { useWorldStore } from '@utils/world';
 
 const BORDER_THICKNESS = 20;
 
@@ -13,6 +13,8 @@ interface BorderConfig {
 
 const Border = ({ config = {} }: { config?: BorderConfig }) => {
     const { hideUp, hideDown, hideLeft, hideRight } = config;
+    const { map } = useWorldStore();
+    const { width: mapWidth, height: mapHeight } = map;
 
     // Top border: positioned above the map
     const topBorder = {

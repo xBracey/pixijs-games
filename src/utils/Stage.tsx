@@ -1,13 +1,10 @@
 import { Application, ApplicationRef } from '@pixi/react';
-import { Pixi } from './Pixi';
 import { ComponentProps, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { useWindowSize } from 'react-use';
-import { height as mapHeight, width as mapWidth } from './map';
-import { Html } from './Html';
 import { initDevtools } from '@pixi/devtools';
 import WorldOverlay from '../components/dom/WorldOverlay';
-import { HtmlBackground } from './HtmlBackground';
-import { useWorldStore } from '../zustand/world';
+import { useWorldStore } from './world';
+import { Html, HtmlBackground, Pixi } from './tunnel';
 
 export function Stage({ stageProps, children }: { stageProps: ComponentProps<typeof Application>; children: ReactNode }) {
     const stageRef = useRef<ApplicationRef>(null);
@@ -15,7 +12,7 @@ export function Stage({ stageProps, children }: { stageProps: ComponentProps<typ
     const hasInitDevTools = useRef(false);
     const { width, height } = useWindowSize();
     const [showDebug, setShowDebug] = useState(false);
-    const { setScreen } = useWorldStore();
+    const { setScreen, map } = useWorldStore();
 
     useEffect(() => {
         if (!stageRef.current) return;
@@ -37,13 +34,13 @@ export function Stage({ stageProps, children }: { stageProps: ComponentProps<typ
     }, [stageRef]);
 
     const scale = useMemo(() => {
-        return Math.min(width / mapWidth, height / mapHeight);
+        return Math.min(width / map.width, height / map.height);
     }, [width, height]);
 
     useEffect(() => {
         const updateScreen = () => {
             if (!mainDivRef.current) return;
-            
+
             const rect = mainDivRef.current.getBoundingClientRect();
             setScreen({
                 scale,
@@ -85,7 +82,7 @@ export function Stage({ stageProps, children }: { stageProps: ComponentProps<typ
                 {showDebug ? 'Hide Debug' : 'Show Debug'}
             </button>
 
-            <div id="main" ref={mainDivRef} style={{ transform: `scale(${scale})`, height: mapHeight, width: mapWidth }}>
+            <div id="main" ref={mainDivRef} style={{ transform: `scale(${scale})`, height: map.height, width: map.width }}>
                 <div className="absolute inset-0 z-[5]">
                     <HtmlBackground.Out />
                 </div>
@@ -96,7 +93,7 @@ export function Stage({ stageProps, children }: { stageProps: ComponentProps<typ
                     <Html.Out />
                 </div>
 
-                <Application {...stageProps} ref={stageRef} className="absolute inset-0 z-10">
+                <Application {...stageProps} ref={stageRef} className="absolute inset-0 z-10" width={map.width} height={map.height}>
                     <Pixi.Out />
                 </Application>
             </div>

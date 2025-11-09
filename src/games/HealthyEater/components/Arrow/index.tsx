@@ -1,12 +1,11 @@
+import { MovementBasicDirection } from '@hooks/useMovement';
 import { useTick } from '@pixi/react';
-import { Pixi } from '../../../utils/Pixi';
-import { useWorldStore } from '../../../zustand/world';
+import { useWorldStore } from '@utils/world';
 import { useRef, useEffect, useCallback, useMemo } from 'react';
-import PhysicsObjectAnimatedSprite from '../physics/PhysicsObject/PhysicsObjectAnimatedSprite';
-import { MovementBasicDirection } from '../../../utils/useMovement';
-import { useHealthyEaterStore } from '../../../zustand/healthy-eater';
-import { useSpriteRotation } from '../../../utils/useSpriteRotation';
-import { height as mapHeight, width as mapWidth } from '../../../utils/map';
+import { useHealthyEaterStore } from '../../store';
+import { useSpriteRotation } from '@hooks/useSpriteRotation';
+import PhysicsObjectAnimatedSprite from '@physics/PhysicsObjectAnimatedSprite';
+import { Pixi } from '@utils/tunnel';
 
 const idPrefix = 'apple';
 
@@ -21,6 +20,8 @@ interface IArrow {
 
 const Arrow = ({ id, x, y, speed, direction, onRemoveArrow }: IArrow) => {
     const hasSpawned = useRef(false);
+    const { map } = useWorldStore();
+    const { width: mapWidth, height: mapHeight } = map;
     const initialRect = useMemo(() => {
         if (direction === 'up') return { x, y: mapHeight - 64, h: 64, w: 16 };
         if (direction === 'down') return { x, y: 64, h: 64, w: 16 };

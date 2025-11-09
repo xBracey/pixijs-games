@@ -1,7 +1,7 @@
+import PhysicsObjectSprite from '@physics/PhysicsObjectSprite';
 import { useTick } from '@pixi/react';
-import { Pixi } from '../../../utils/Pixi';
-import { useWorldStore } from '../../../zustand/world';
-import PhysicsObjectSprite from '../physics/PhysicsObject/PhysicsObjectSprite';
+import { Pixi } from '@utils/tunnel';
+import { useWorldStore } from '@utils/world';
 import { useRef, useEffect, useCallback } from 'react';
 
 const idPrefix = 'apple';

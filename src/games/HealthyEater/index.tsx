@@ -1,17 +1,16 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import Button from '../../components/dom/Button';
-import GameHeader from '../../components/dom/GameHeader';
-import Apple from '../../components/game/Apple';
-import Arrow from '../../components/game/Arrow';
-import Skeleton from '../../components/game/Skeleton';
-import { useHealthyEaterStore } from '../../zustand/healthy-eater';
-import { useWorldStore } from '../../zustand/world';
-import Border from '../../components/game/Border';
-import { calculateRandomXY } from './calculateRandomXY';
-import { calculateDirection } from './calculateDirection';
-import { height, width } from '../../utils/map';
-import { HtmlBackground } from '../../utils/HtmlBackground';
-import { PauseableTimeout } from '../../utils/Timer';
+import { useHealthyEaterStore } from './store';
+import { useWorldStore } from '@utils/world';
+import { PauseableTimeout } from '@utils/timeout';
+import { HtmlBackground } from '@utils/tunnel';
+import GameHeader from '@dom/GameHeader';
+import Button from '@dom/Button';
+import Border from '@game/Border';
+import Skeleton from './components/Skeleton';
+import Apple from './components/Apple';
+import { calculateRandomXY } from './utils/calculateRandomXY';
+import { calculateDirection } from './utils/calculateDirection';
+import Arrow from './components/Arrow';
 
 const foodMap: Record<number, number> = {
     1: 10,
@@ -43,6 +42,9 @@ const HealthyEater = () => {
     const { paused, setPaused, resetWorld } = useWorldStore();
     const [showLevelTransition, setShowLevelTransition] = useState(false);
     const foodTimeouts = useRef<PauseableTimeout[]>([]);
+    calculateRandomXY;
+    const { map } = useWorldStore();
+    const { width: mapWidth, height: mapHeight } = map;
 
     const onLevelStart = useCallback(() => {
         const newFoodLeft = foodMap[level] ?? 25;
@@ -128,8 +130,8 @@ const HealthyEater = () => {
                         style={{
                             backgroundImage: 'url(/assets/background/dungeon.png)',
                             backgroundSize: 'cover',
-                            height,
-                            width
+                            height: mapHeight,
+                            width: mapWidth
                         }}
                     />
                 </div>
@@ -152,7 +154,7 @@ const HealthyEater = () => {
             {levelStartTimestamp &&
                 status === 'playing' &&
                 foodActive.map((id) => {
-                    const { x, y } = calculateRandomXY(id, levelStartTimestamp);
+                    const { x, y } = calculateRandomXY(id, levelStartTimestamp, mapWidth, mapHeight);
 
                     return <Apple key={`${levelStartTimestamp}_${id}`} id={id} x={x} y={y} onAte={onAte(id)} />;
                 })}
@@ -160,7 +162,7 @@ const HealthyEater = () => {
             {levelStartTimestamp &&
                 status === 'playing' &&
                 arrowsActive.map((id) => {
-                    const { x, y } = calculateRandomXY(id, levelStartTimestamp);
+                    const { x, y } = calculateRandomXY(id, levelStartTimestamp, mapWidth, mapHeight);
                     const direction = calculateDirection(id, levelStartTimestamp);
 
                     return (

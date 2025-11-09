@@ -7,6 +7,11 @@ interface IScreen {
     y: number;
 }
 
+interface IMap {
+    height: number;
+    width: number;
+}
+
 interface WorldStore {
     world: World;
     paused: boolean;
@@ -18,6 +23,8 @@ interface WorldStore {
     removeRect: (id: string) => void;
     screen: IScreen;
     setScreen: (screen: IScreen) => void;
+    map: IMap;
+    setMap: (screen: IMap) => void;
 }
 
 export const useWorldStore = create<WorldStore>((set, get) => ({
@@ -37,5 +44,7 @@ export const useWorldStore = create<WorldStore>((set, get) => ({
         return set({ rects: remainingRects });
     },
     screen: { scale: 1, x: 0, y: 0 },
-    setScreen: (screen: IScreen) => set({ screen })
+    setScreen: (screen: IScreen) => set({ screen }),
+    map: { width: 1280, height: 720 },
+    setMap: (map: IMap) => set({ map })
 }));

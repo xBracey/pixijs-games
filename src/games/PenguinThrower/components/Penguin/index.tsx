@@ -1,13 +1,11 @@
 import { MouseEventHandler, useEffect, useRef } from 'react';
-import { Pixi } from '../../../utils/Pixi';
-import { useGravity } from '../../../utils/useGravity';
-import PhysicsObjectAnimatedSprite from '../physics/PhysicsObject/PhysicsObjectAnimatedSprite';
 import { AnimatedSprite } from 'pixi.js';
-import { usePenguinThrowerStore } from '../../../zustand/penguin-thrower';
 import { useTick } from '@pixi/react';
-import { width } from '../../../utils/map';
-import { Html } from '../../../utils/Html';
-import { useWorldStore } from '../../../zustand/world';
+import { useWorldStore } from '@utils/world';
+import { usePenguinThrowerStore } from '../../store';
+import { useGravity } from '@hooks/useGravity';
+import { Html, Pixi } from '@utils/tunnel';
+import PhysicsObjectAnimatedSprite from '@physics/PhysicsObjectAnimatedSprite';
 
 interface IPenguin {}
 
@@ -16,6 +14,9 @@ const id = 'penguin';
 const Penguin = ({}: IPenguin) => {
     const { screen, world } = useWorldStore();
     const { penguinSpeed, setPenguinSpeed, setMapLeft } = usePenguinThrowerStore();
+    const {
+        map: { width: mapWidth }
+    } = useWorldStore();
 
     const spriteRef = useRef<AnimatedSprite>(null);
     const { jump, isGrounded } = useGravity(id, 0.2, 0.7);
@@ -30,7 +31,7 @@ const Penguin = ({}: IPenguin) => {
     }, [isGrounded]);
 
     useTick(() => {
-        setMapLeft((mapLeft) => mapLeft + penguinSpeed);
+        setMapLeft((mapLeft) => mapLeft + penguinSpeed, mapWidth);
 
         if (isGrounded && penguinSpeed > 0) {
             if (penguinSpeed < 0.01) {

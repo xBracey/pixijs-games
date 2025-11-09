@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from '@tanstack/react-router';
-import Button from '../Button';
 import { twMerge } from 'tailwind-merge';
+import Button from '@dom/Button';
 
 interface IGameHeader {
     title: string;

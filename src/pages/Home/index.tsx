@@ -1,5 +1,5 @@
+import Button from '@dom/Button';
 import { Link } from '@tanstack/react-router';
-import Button from '../../components/dom/Button';
 
 export const Home = () => {
     return (

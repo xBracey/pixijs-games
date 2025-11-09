@@ -1,4 +1,4 @@
-import { MovementBasicDirection } from '../../utils/useMovement';
+import { MovementBasicDirection } from '@hooks/useMovement';
 
 export const calculateDirection = (id: number, levelStartTimestamp: number): MovementBasicDirection => {
     const directionNum = (levelStartTimestamp + id) % 4;

@@ -3,7 +3,7 @@ import { extend, PixiReactElementProps } from '@pixi/react';
 import { IRect } from 'bump-ts';
 import { AnimatedSprite, Assets, Spritesheet, SpritesheetData, Texture } from 'pixi.js';
 import { usePhyicsObject } from './usePhysicsObject';
-import { useWorldStore } from '../../../../zustand/world';
+import { useWorldStore } from '@utils/world';
 
 extend({ AnimatedSprite });
 

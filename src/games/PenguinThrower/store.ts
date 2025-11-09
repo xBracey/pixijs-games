@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { width } from '../utils/map';
 
 interface PenguinThrowerStore {
     status: string;
@@ -10,7 +9,7 @@ interface PenguinThrowerStore {
     penguinSpeed: number;
     setPenguinSpeed: (speed: number | ((speed: number) => number)) => void;
     mapLeft: number;
-    setMapLeft: (mapLeft: number | ((mapLeft: number) => number)) => void;
+    setMapLeft: (mapLeft: number | ((mapLeft: number) => number), width: number) => void;
     revolutions: number;
 }
 
@@ -36,7 +35,7 @@ export const usePenguinThrowerStore = create<PenguinThrowerStore>()((set, get) =
             penguinSpeed: typeof penguinSpeed === 'function' ? penguinSpeed(state.penguinSpeed) : penguinSpeed
         })),
     mapLeft: 0,
-    setMapLeft: (mapLeft: number | ((prev: number) => number)) =>
+    setMapLeft: (mapLeft: number | ((prev: number) => number), width: number) =>
         set((state) => {
             const newMapLeft = typeof mapLeft === 'function' ? mapLeft(state.mapLeft) : mapLeft;
             const newRevolutions = state.revolutions + (newMapLeft > width * 3 ? 1 : 0);
