@@ -82,7 +82,12 @@ export function Stage({ stageProps, children }: { stageProps: ComponentProps<typ
                 {showDebug ? 'Hide Debug' : 'Show Debug'}
             </button>
 
-            <div id="main" ref={mainDivRef} style={{ transform: `scale(${scale})`, height: map.height, width: map.width }}>
+            <div
+                className="relative"
+                id="main"
+                ref={mainDivRef}
+                style={{ transform: `scale(${scale})`, height: map.height, width: map.width }}
+            >
                 <div className="absolute inset-0 z-[5]">
                     <HtmlBackground.Out />
                 </div>

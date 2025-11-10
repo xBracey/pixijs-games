@@ -21,9 +21,11 @@
         "paths": {
             "@hooks/*": ["src/hooks/*"],
             "@utils/*": ["src/utils/*"],
+            "@decorators/*": ["src/decorators/*"],
             "@dom/*": ["src/components/dom/*"],
             "@game/*": ["src/components/game/*"],
-            "@physics/*": ["src/components/physics/*"]
+            "@physics/*": ["src/components/physics/*"],
+            "@src/*": ["src/*"]
         }
     },
     "exclude": ["node_modules", "dist"],

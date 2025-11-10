@@ -57,7 +57,7 @@ const PenguinThrower = () => {
                         className="absolute opacity-100"
                         style={{
                             left: -mapLeft,
-                            backgroundImage: 'url(/assets/background/map-extended.png)',
+                            backgroundImage: 'url(/assets/penguin-thrower/map.png)',
                             height,
                             width: width * 3
                         }}
@@ -66,7 +66,7 @@ const PenguinThrower = () => {
                         className="absolute opacity-100"
                         style={{
                             left: -mapLeft + width * 3 - 5,
-                            backgroundImage: 'url(/assets/background/map-extended.png)',
+                            backgroundImage: 'url(/assets/penguin-thrower/map.png)',
                             height,
                             width: width * 3
                         }}

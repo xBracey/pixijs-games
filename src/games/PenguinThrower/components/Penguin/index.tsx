@@ -1,4 +1,4 @@
-import { MouseEventHandler, useEffect, useRef } from 'react';
+import { MouseEventHandler, useCallback, useEffect, useRef } from 'react';
 import { AnimatedSprite } from 'pixi.js';
 import { useTick } from '@pixi/react';
 import { useWorldStore } from '@utils/world';
@@ -6,13 +6,13 @@ import { usePenguinThrowerStore } from '../../store';
 import { useGravity } from '@hooks/useGravity';
 import { Html, Pixi } from '@utils/tunnel';
 import PhysicsObjectAnimatedSprite from '@physics/PhysicsObjectAnimatedSprite';
+import LaunchArrow from '../LaunchArrow';
 
 interface IPenguin {}
 
 const id = 'penguin';
 
 const Penguin = ({}: IPenguin) => {
-    const { screen, world } = useWorldStore();
     const { penguinSpeed, setPenguinSpeed, setMapLeft } = usePenguinThrowerStore();
     const {
         map: { width: mapWidth }
@@ -43,28 +43,18 @@ const Penguin = ({}: IPenguin) => {
         }
     });
 
-    const onLaunch: MouseEventHandler<HTMLDivElement> = (e) => {
-        if (!isGrounded) return;
+    const onJump = useCallback((angle: number, percentage: number) => {
+        const x = Math.cos(-angle);
+        const y = Math.sin(-angle);
+        const power = 20;
 
-        const x = (e.clientX - screen.x) / screen.scale;
-        const y = (e.clientY - screen.y) / screen.scale;
-
-        const penguin = world.getRect(id);
-
-        const launchSpeed = 0.05;
-
-        const xDiff = Math.abs(x - penguin.x) * launchSpeed;
-        const yDiff = Math.abs(y - penguin.y) * launchSpeed;
-
-        jump(yDiff);
-        setPenguinSpeed((penguinSpeed) => penguinSpeed + xDiff);
-    };
+        jump(y * percentage * power);
+        setPenguinSpeed((penguinSpeed) => penguinSpeed + x * percentage * power);
+    }, []);
 
     return (
         <>
-            <Html.In>
-                <div className="absolute inset-0" onClick={onLaunch} />
-            </Html.In>
+            {isGrounded && <LaunchArrow penguinId={id} onJump={onJump} />}
             <PhysicsObjectAnimatedSprite
                 id={id}
                 initialRect={{ x: 50, y: 500, w: 64, h: 64 }}

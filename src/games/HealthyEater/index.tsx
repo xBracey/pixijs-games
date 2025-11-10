@@ -128,7 +128,7 @@ const HealthyEater = () => {
                     <div
                         className="absolute inset-0 opacity-30"
                         style={{
-                            backgroundImage: 'url(/assets/background/dungeon.png)',
+                            backgroundImage: 'url(/assets/healthy-eater/background/dungeon.png)',
                             backgroundSize: 'cover',
                             height: mapHeight,
                             width: mapWidth

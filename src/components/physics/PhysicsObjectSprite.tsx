@@ -3,6 +3,7 @@ import { extend, PixiReactElementProps } from '@pixi/react';
 import { IRect } from 'bump-ts';
 import { Assets, Sprite, Texture } from 'pixi.js';
 import { usePhyicsObject } from './usePhysicsObject';
+import { useWorldStore } from '@utils/world';
 
 extend({ Sprite });
 
@@ -14,6 +15,7 @@ interface IPhysicsObject {
 }
 
 const PhysicsObjectSprite = ({ id, initialRect, sprite, textureName }: IPhysicsObject) => {
+    const { activeGame } = useWorldStore();
     const spriteRef = useRef<Sprite>(null);
 
     const { x, y, w, h } = usePhyicsObject(id, initialRect);
@@ -22,7 +24,7 @@ const PhysicsObjectSprite = ({ id, initialRect, sprite, textureName }: IPhysicsO
 
     const loadTexture = useCallback(async () => {
         if (texture === Texture.EMPTY && textureName) {
-            const newTexture = await Assets.load(`/assets/${textureName}/0001.png`);
+            const newTexture = await Assets.load(`/assets/${activeGame}/${textureName}/0001.png`);
             setTexture(newTexture);
         }
     }, [texture, textureName]);

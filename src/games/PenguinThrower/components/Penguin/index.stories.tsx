@@ -1,6 +1,14 @@
-import { Story } from "@ladle/react";
-import Skeleton from ".";
+import { Story } from '@ladle/react';
+import Penguin from '.';
+import { game } from '@src/decorators/game';
+import Border from '@game/Border';
 
-export const SkeletonStory: Story = () => <Skeleton />;
+export const PenguinStory: Story = () => (
+    <>
+        <Penguin />
+        <Border config={{ hideUp: true }} />
+    </>
+);
 
-SkeletonStory.storyName = "Skeleton";
+PenguinStory.decorators = [game('penguin-thrower')];
+PenguinStory.displayName = 'Penguin';

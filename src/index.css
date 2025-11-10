@@ -16,3 +16,21 @@ div,
 p {
     font-family: 'Press Start 2P', cursive;
 }
+
+.ladle-main {
+    padding: 0;
+    width: 100vw;
+    overflow: hidden !important;
+}
+
+.ladle-aside {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    padding: 1rem;
+}
+
+.ladle-resize-handle {
+    display: none;
+}

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useTick } from '@pixi/react';
 import { useWorldStore } from '../utils/world';
 
@@ -51,8 +51,10 @@ export const useGravity = (id: string, gravityValue: number, bounceValue = 0) =>
             const wasMovingDown = gravityState.velocityY > 0;
 
             if (wasMovingDown && y < newY) {
+                const newVelocity = -gravityState.velocityY * bounceValue;
+
                 // We hit ground while falling
-                gravityState.isGrounded = true;
+                gravityState.isGrounded = Math.abs(newVelocity) < 0.1;
                 gravityState.velocityY = -gravityState.velocityY * bounceValue;
             }
         } else {
@@ -64,12 +66,15 @@ export const useGravity = (id: string, gravityValue: number, bounceValue = 0) =>
         gravityStateRef.current = gravityState;
     });
 
-    const jump = (jumpStrength: number = -10) => {
-        if (gravityStateRef.current.isGrounded) {
-            gravityStateRef.current.velocityY = -jumpStrength;
-            gravityStateRef.current.isGrounded = false;
-        }
-    };
+    const jump = useCallback(
+        (jumpStrength: number = -10) => {
+            if (gravityStateRef.current.isGrounded) {
+                gravityStateRef.current.velocityY = -jumpStrength;
+                gravityStateRef.current.isGrounded = false;
+            }
+        },
+        [gravityStateRef]
+    );
 
     return {
         isGrounded: gravityStateRef.current.isGrounded,

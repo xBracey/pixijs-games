@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import Bump, { IRect, World } from 'bump-ts';
 
+export type Game = 'healthy-eater' | 'penguin-thrower';
+
 interface IScreen {
     scale: number;
     x: number;
@@ -25,6 +27,8 @@ interface WorldStore {
     setScreen: (screen: IScreen) => void;
     map: IMap;
     setMap: (screen: IMap) => void;
+    activeGame?: Game;
+    setActiveGame: (activeGame: Game) => void;
 }
 
 export const useWorldStore = create<WorldStore>((set, get) => ({
@@ -46,5 +50,6 @@ export const useWorldStore = create<WorldStore>((set, get) => ({
     screen: { scale: 1, x: 0, y: 0 },
     setScreen: (screen: IScreen) => set({ screen }),
     map: { width: 1280, height: 720 },
-    setMap: (map: IMap) => set({ map })
+    setMap: (map: IMap) => set({ map }),
+    setActiveGame: (activeGame: Game) => set({ activeGame })
 }));
