@@ -74,10 +74,10 @@ export function Stage({ stageProps, children }: { stageProps: ComponentProps<typ
     }, [scale, setScreen]);
 
     return (
-        <div className="flex h-screen w-screen items-center justify-center bg-gray-600">
+        <div className="flex max-h-screen items-center justify-center bg-gray-600 md:h-screen md:w-screen">
             <button
                 onClick={() => setShowDebug(!showDebug)}
-                className="fixed right-4 top-4 z-50 rounded bg-blue-600 px-3 py-2 text-white transition-colors hover:bg-blue-700"
+                className="fixed right-4 top-4 z-50 hidden rounded bg-blue-600 px-3 py-2 text-white transition-colors hover:bg-blue-700 md:block"
             >
                 {showDebug ? 'Hide Debug' : 'Show Debug'}
             </button>
@@ -86,7 +86,7 @@ export function Stage({ stageProps, children }: { stageProps: ComponentProps<typ
                 className="relative"
                 id="main"
                 ref={mainDivRef}
-                style={{ transform: `scale(${scale})`, height: map.height, width: map.width }}
+                style={{ transform: `scale(${scale})`, height: map.height, width: map.width, minHeight: map.height, minWidth: map.width }}
             >
                 <div className="absolute inset-0 z-[5]">
                     <HtmlBackground.Out />

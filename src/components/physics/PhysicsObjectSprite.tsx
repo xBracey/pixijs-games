@@ -1,9 +1,8 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
 import { extend, PixiReactElementProps } from '@pixi/react';
 import { IRect } from 'bump-ts';
-import { Assets, Sprite, Texture } from 'pixi.js';
+import { Sprite } from 'pixi.js';
 import { usePhyicsObject } from './usePhysicsObject';
-import { useWorldStore } from '@utils/world';
+import GameSprite from '@game/GameSprite';
 
 extend({ Sprite });
 
@@ -15,25 +14,9 @@ interface IPhysicsObject {
 }
 
 const PhysicsObjectSprite = ({ id, initialRect, sprite, textureName }: IPhysicsObject) => {
-    const { activeGame } = useWorldStore();
-    const spriteRef = useRef<Sprite>(null);
-
     const { x, y, w, h } = usePhyicsObject(id, initialRect);
 
-    const [texture, setTexture] = useState<Texture>(Texture.EMPTY);
-
-    const loadTexture = useCallback(async () => {
-        if (texture === Texture.EMPTY && textureName) {
-            const newTexture = await Assets.load(`/assets/${activeGame}/${textureName}/0001.png`);
-            setTexture(newTexture);
-        }
-    }, [texture, textureName]);
-
-    useEffect(() => {
-        loadTexture();
-    }, [texture]);
-
-    return <pixiSprite {...sprite} ref={spriteRef} x={x} y={y} width={w} height={h} anchor={0} texture={texture} />;
+    return <GameSprite sprite={{ ...sprite, x, y, width: w, height: h }} textureName={textureName} />;
 };
 
 export default PhysicsObjectSprite;

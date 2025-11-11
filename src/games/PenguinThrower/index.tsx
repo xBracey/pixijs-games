@@ -1,4 +1,3 @@
-import { useState, useEffect, useCallback } from 'react';
 import styles from './index.module.css';
 import { usePenguinThrowerStore } from './store';
 import { useWorldStore } from '@utils/world';
@@ -7,47 +6,31 @@ import GameHeader from '@dom/GameHeader';
 import Button from '@dom/Button';
 import Border from '@game/Border';
 import Penguin from './components/Penguin';
+import Shop from './Shop';
 
 const PenguinThrower = () => {
-    const { status, setStatus, score, mapLeft, resetGame } = usePenguinThrowerStore();
-    const { paused, setPaused, resetWorld } = useWorldStore();
-    const [showLevelTransition, setShowLevelTransition] = useState(false);
+    const { status, score, mapLeft, setStatus, money } = usePenguinThrowerStore();
+    const { paused, setPaused } = useWorldStore();
     const { map } = useWorldStore();
     const { width, height } = map;
 
-    const onGameStart = useCallback(() => {
-        setShowLevelTransition(false);
-        setStatus('playing');
-        resetGame();
-    }, [setShowLevelTransition, setStatus, resetGame]);
-
-    useEffect(() => {
-        if (showLevelTransition) {
-            const timer = setTimeout(onGameStart, 500);
-            return () => clearTimeout(timer);
-        }
-    }, [showLevelTransition, onGameStart]);
-
     const onHeaderButtonClick = () => {
-        if (status === 'idle') {
-            setShowLevelTransition(true);
+        if (status === 'menu') {
+            setStatus('throwing');
             return;
         }
+
         if (paused) return setPaused(false);
         return setPaused(true);
     };
 
     const buttonTitle = () => {
-        if (status === 'idle') return 'Start';
+        if (status === 'menu') return 'Start';
         if (paused) return 'Resume';
         return 'Pause';
     };
 
-    useEffect(() => {
-        if (status !== 'playing') {
-            resetWorld();
-        }
-    }, [status, resetWorld]);
+    const inGame = status === 'throwing' || status === 'threw';
 
     return (
         <div className={styles.PenguinThrowerContainer}>
@@ -74,17 +57,19 @@ const PenguinThrower = () => {
                 </div>
             </HtmlBackground.In>
 
-            <GameHeader title="Penguin Thrower" isPlaying={status === 'playing'} bgColor="bg-snow-500">
-                {!showLevelTransition && <Button onClick={onHeaderButtonClick}>{buttonTitle()}</Button>}
+            <GameHeader title="Penguin Thrower" isPlaying={status !== 'menu'} bgColor="bg-snow-500">
+                <Button onClick={onHeaderButtonClick}>{buttonTitle()}</Button>
             </GameHeader>
 
             <Border config={{ hideUp: true, hideLeft: true, hideRight: true }} />
 
-            {status === 'playing' && <Penguin />}
+            {status === 'shop' && <Shop />}
 
-            {status === 'playing' && (
+            {inGame && <Penguin />}
+
+            {inGame && (
                 <div className="absolute left-4 top-4 z-10 rounded-md bg-snow-400 p-2 text-white">
-                    <p>Score: {score}</p>
+                    <p>Score: {score}</p> <p>Money: £{Math.round(money * 100) / 100}</p>
                 </div>
             )}
         </div>

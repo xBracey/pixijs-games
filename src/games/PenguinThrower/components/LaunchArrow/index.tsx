@@ -54,7 +54,7 @@ const LaunchArrow = ({ penguinId, onJump }: ILaunchArrow) => {
         <>
             <Animation
                 animatedSprite={{
-                    animationSpeed: 0.4,
+                    animationSpeed: 0.8,
                     x: position.x,
                     y: position.y,
                     width: 64,
