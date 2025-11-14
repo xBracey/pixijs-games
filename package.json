@@ -12,7 +12,7 @@
         "@ladle/react": "^5.1.1",
         "@pixi/devtools": "^2.0.1",
         "@pixi/react": "^8.0.3",
-        "@tanstack/react-router": "^1.22.3",
+        "@tanstack/react-router": "^1.136.3",
         "@tanstack/react-router-devtools": "^1.133.22",
         "axios": "^1.6.8",
         "bump-ts": "^0.6.3",
@@ -34,7 +34,7 @@
         "@vitejs/plugin-react": "^4.2.1",
         "prettier": "^2.5.1",
         "prettier-plugin-tailwindcss": "^0.1.5",
-        "typescript": "^4.4.4",
+        "typescript": "^5.9.3",
         "vitawind": "^2.2.4",
         "vite": "^5.0.12",
         "vite-plugin-pwa": "^0.17.5"

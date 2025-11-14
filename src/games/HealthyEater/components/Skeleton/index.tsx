@@ -4,7 +4,8 @@ import { useCallback } from 'react';
 import { useHealthyEaterStore } from '../../store';
 import { useMovement } from '@hooks/useMovement';
 import { useSpriteRotation } from '@hooks/useSpriteRotation';
-import PhysicsObjectAnimatedSprite from '@physics/PhysicsObjectAnimatedSprite';
+import PhysicsObject from '@physics/PhysicsObject';
+import AnimatedGameSprite from '@game/AnimatedGameSprite';
 import CenteredHTML from '@dom/CenteredHTML';
 import HealthBar from '../HealthBar';
 import { Pixi } from '@utils/tunnel';
@@ -45,17 +46,17 @@ const Skeleton = () => {
 
     return (
         <>
-            <PhysicsObjectAnimatedSprite
-                id={id}
-                initialRect={rect}
-                animatedSprite={{
-                    eventMode: 'static',
-                    animationSpeed: 0.15,
-                    rotation: spriteTransform.rotation,
-                    scale: { x: spriteTransform.scaleX, y: spriteTransform.scaleY }
-                }}
-                textureProps={{ name: 'skeleton', imageNum: 4 }}
-            />
+            <PhysicsObject id={id} initialRect={rect}>
+                <AnimatedGameSprite
+                    animatedSprite={{
+                        eventMode: 'static',
+                        animationSpeed: 0.15,
+                        rotation: spriteTransform.rotation,
+                        scale: { x: spriteTransform.scaleX, y: spriteTransform.scaleY }
+                    }}
+                    textureProps={{ name: 'skeleton', imageNum: 4 }}
+                />
+            </PhysicsObject>
             <CenteredHTML rect={rect}>
                 <div className="mb-20">
                     <HealthBar health={health} />

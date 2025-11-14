@@ -4,7 +4,8 @@ import { useWorldStore } from '@utils/world';
 import { useRef, useEffect, useCallback, useMemo } from 'react';
 import { useHealthyEaterStore } from '../../store';
 import { useSpriteRotation } from '@hooks/useSpriteRotation';
-import PhysicsObjectAnimatedSprite from '@physics/PhysicsObjectAnimatedSprite';
+import PhysicsObject from '@physics/PhysicsObject';
+import AnimatedGameSprite from '@game/AnimatedGameSprite';
 import { Pixi } from '@utils/tunnel';
 
 const idPrefix = 'apple';
@@ -81,18 +82,18 @@ const Arrow = ({ id, x, y, speed, direction, onRemoveArrow }: IArrow) => {
     const spriteTransform = useSpriteRotation(direction);
 
     return (
-        <PhysicsObjectAnimatedSprite
-            id={fullId}
-            initialRect={rect}
-            animatedSprite={{
-                eventMode: 'static',
-                animationSpeed: 0.15,
-                rotation: spriteTransform.rotation,
-                scale: { x: -spriteTransform.scaleX, y: spriteTransform.scaleY },
-                tint: 'rgb(255, 0, 98)'
-            }}
-            textureProps={{ name: 'arrow', imageNum: 2 }}
-        />
+        <PhysicsObject id={fullId} initialRect={rect}>
+            <AnimatedGameSprite
+                animatedSprite={{
+                    eventMode: 'static',
+                    animationSpeed: 0.15,
+                    rotation: spriteTransform.rotation,
+                    scale: { x: -spriteTransform.scaleX, y: spriteTransform.scaleY },
+                    tint: 'rgb(255, 0, 98)'
+                }}
+                textureProps={{ name: 'arrow', imageNum: 2 }}
+            />
+        </PhysicsObject>
     );
 };
 

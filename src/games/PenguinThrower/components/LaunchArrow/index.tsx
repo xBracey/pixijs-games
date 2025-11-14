@@ -1,6 +1,6 @@
 import { Html, Pixi } from '@utils/tunnel';
 import { MouseEventHandler, useCallback, useMemo, useRef, useState } from 'react';
-import Animation from '@game/Animation';
+import AnimatedGameSprite from '@game/AnimatedGameSprite';
 import { AnimatedSprite } from 'pixi.js';
 import { useWorldStore } from '@utils/world';
 import { useTick } from '@pixi/react';
@@ -52,7 +52,7 @@ const LaunchArrow = ({ penguinId, onJump }: ILaunchArrow) => {
 
     return (
         <>
-            <Animation
+            <AnimatedGameSprite
                 animatedSprite={{
                     animationSpeed: 0.8,
                     x: position.x,
@@ -60,7 +60,8 @@ const LaunchArrow = ({ penguinId, onJump }: ILaunchArrow) => {
                     width: 64,
                     height: 64,
                     loop: false,
-                    rotation: angle
+                    rotation: angle,
+                    anchor: 0.5
                 }}
                 textureProps={{
                     name: 'arrow',

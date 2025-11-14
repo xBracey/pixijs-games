@@ -58,7 +58,6 @@ const HealthyEater = () => {
 
         for (let index = 0; index < numbers.length; index++) {
             const number = numbers[index];
-            console.log(number);
             foodTimeouts.current.push(
                 new PauseableTimeout(() => {
                     setFoodLeft((foodLeft) => foodLeft - 1);

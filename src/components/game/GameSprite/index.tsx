@@ -27,7 +27,7 @@ const GameSprite = ({ sprite, textureName }: IPhysicsObject) => {
         loadTexture();
     }, [texture]);
 
-    return <pixiSprite {...sprite} ref={spriteRef} anchor={0} texture={texture} />;
+    return <pixiSprite ref={spriteRef} anchor={0} texture={texture} {...sprite} />;
 };
 
 export default GameSprite;

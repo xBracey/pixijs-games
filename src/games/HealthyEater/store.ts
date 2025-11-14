@@ -44,7 +44,6 @@ export const useHealthyEaterStore = create<HealthyEaterStore>()((set, get) => ({
     },
     onEat: () => {
         const { health, level, foodActive, foodLeft } = get();
-        console.log(foodLeft, foodActive);
         if (foodActive.length <= 1 && foodLeft === 0) {
             set({
                 level: level + 1,

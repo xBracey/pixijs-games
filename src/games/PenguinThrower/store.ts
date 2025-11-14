@@ -89,8 +89,6 @@ export const usePenguinThrowerStore = create<PenguinThrowerStore>()((set) => ({
     bounciness: 0.3,
     launchPower: 1.2,
     purchaseUpgrade: (upgradeType: UpgradeType, cost: number) => {
-        console.log(upgradeType, cost);
-
         return set((state) => {
             if (state.money >= cost) {
                 const updates: Partial<PenguinThrowerStore> = {

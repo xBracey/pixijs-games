@@ -92,10 +92,12 @@ const Animation = ({ animatedSprite, textureProps, useSpriteSheet = false, autop
             spriteRef.current.animationSpeed = -spriteRef.current?.animationSpeed;
             spriteRef.current.play();
         }
+
+        if (animatedSprite.onComplete) animatedSprite.onComplete();
     };
 
     return textures ? (
-        <pixiAnimatedSprite {...animatedSprite} ref={spriteRef} anchor={0.5} textures={textures} onComplete={onComplete} />
+        <pixiAnimatedSprite ref={spriteRef} anchor={0} textures={textures} onComplete={onComplete} {...animatedSprite} />
     ) : null;
 };
 

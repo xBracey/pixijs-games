@@ -1,4 +1,5 @@
-import PhysicsObjectSprite from '@physics/PhysicsObjectSprite';
+import GameSprite from '@game/GameSprite';
+import PhysicsObject from '@physics/PhysicsObject';
 import { useTick } from '@pixi/react';
 import { Pixi } from '@utils/tunnel';
 import { useWorldStore } from '@utils/world';
@@ -34,7 +35,11 @@ const Apple = ({ id, x, y, onAte }: IApple) => {
 
     useTick(checkIfAte);
 
-    return <PhysicsObjectSprite id={fullId} initialRect={rect} sprite={{ eventMode: 'static' }} textureName="apple" />;
+    return (
+        <PhysicsObject id={fullId} initialRect={rect}>
+            <GameSprite sprite={{ eventMode: 'static', width: 32, height: 32 }} textureName="apple" />;
+        </PhysicsObject>
+    );
 };
 
 const AppleWrapped = (props: IApple) => (

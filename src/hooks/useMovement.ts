@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTick } from '@pixi/react';
-import { useWorldStore } from '../zustand/world';
 import { IRect } from 'bump-ts';
+import { useWorldStore } from '@utils/world';
 
 export type MovementBasicDirection = 'left' | 'right' | 'up' | 'down';
 export type MovementDirection = MovementBasicDirection | 'up-left' | 'up-right' | 'down-left' | 'down-right';

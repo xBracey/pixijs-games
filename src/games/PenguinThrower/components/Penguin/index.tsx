@@ -1,14 +1,14 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatedSprite } from 'pixi.js';
 import { useTick } from '@pixi/react';
 import { useWorldStore } from '@utils/world';
 import { usePenguinThrowerStore } from '../../store';
 import { useGravity } from '@hooks/useGravity';
 import { Pixi } from '@utils/tunnel';
-import PhysicsObjectAnimatedSprite from '@physics/PhysicsObjectAnimatedSprite';
+import PhysicsObject from '@physics/PhysicsObject';
+import AnimatedGameSprite from '@game/AnimatedGameSprite';
 import LaunchArrow from '../LaunchArrow';
 import GameSprite from '@game/GameSprite';
-import Backpack from '../Backpack';
 
 interface IPenguin {}
 
@@ -33,7 +33,9 @@ const Penguin = ({}: IPenguin) => {
     } = useWorldStore();
 
     const spriteRef = useRef<AnimatedSprite>(null);
+    const eatingFishRef = useRef<AnimatedSprite>(null);
     const { jump, isGrounded } = useGravity(id, 0.2, bounciness);
+    const [isEating, setIsEating] = useState(false);
 
     useEffect(() => {
         if (isGrounded) {
@@ -49,6 +51,10 @@ const Penguin = ({}: IPenguin) => {
 
         if (isGrounded && penguinSpeed > 0) {
             if (penguinSpeed < 0.01) {
+                if (status !== 'threw') {
+                    setIsEating(true);
+                    eatingFishRef.current?.gotoAndPlay(0);
+                }
                 setPenguinSpeed(0);
                 return;
             }
@@ -82,22 +88,41 @@ const Penguin = ({}: IPenguin) => {
         }
     }, [penguinSpeed, status]);
 
+    const onFinishedEating = () => {
+        setIsEating(false);
+    };
+
     return (
         <>
-            {isGrounded && status === 'throwing' && <LaunchArrow penguinId={id} onJump={onJump} />}
-            <PhysicsObjectAnimatedSprite
-                id={id}
-                initialRect={{ x: 50, y: 500, w: 64, h: 64 }}
-                animatedSprite={{
-                    animationSpeed: 0.4
-                }}
-                textureProps={{ name: 'penguin', imageNum: 10 }}
-                useSpriteSheet
-                autoplay={false}
-                ref={spriteRef}
-            />
-
-            {!!backpack && <Backpack penguinId={id} />}
+            {isGrounded && penguinSpeed === 0 && status === 'throwing' && !isEating && <LaunchArrow penguinId={id} onJump={onJump} />}
+            <PhysicsObject id={id} initialRect={{ x: 50, y: 500, w: 64, h: 64 }}>
+                <AnimatedGameSprite
+                    animatedSprite={{
+                        animationSpeed: 0.4,
+                        alpha: isEating ? 0 : 1
+                    }}
+                    textureProps={{ name: 'penguin', imageNum: 10 }}
+                    useSpriteSheet
+                    autoplay={false}
+                    ref={spriteRef}
+                />
+                <AnimatedGameSprite
+                    animatedSprite={{
+                        animationSpeed: 0.3,
+                        alpha: isEating ? 1 : 0,
+                        loop: false,
+                        onComplete: onFinishedEating
+                    }}
+                    textureProps={{
+                        name: 'penguin-fish',
+                        imageNum: 16
+                    }}
+                    autoplay={false}
+                    useSpriteSheet
+                    ref={eatingFishRef}
+                />
+                {!!backpack && <GameSprite sprite={{ height: 64, width: 64 }} textureName="backpack" />}
+            </PhysicsObject>
         </>
     );
 };

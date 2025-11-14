@@ -1,10 +1,7 @@
 import { useEffect } from 'react';
-import { extend, useTick } from '@pixi/react';
+import { useTick } from '@pixi/react';
 import { IRect } from 'bump-ts';
-import { AnimatedSprite, Sprite } from 'pixi.js';
 import { useWorldStore } from '@utils/world';
-
-extend({ Sprite, AnimatedSprite });
 
 export const usePhyicsObject = (id: string, initialRect: IRect) => {
     const { rects, setRect, world, paused } = useWorldStore();

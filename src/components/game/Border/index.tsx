@@ -1,4 +1,5 @@
-import PhysicsObjectSprite from '@physics/PhysicsObjectSprite';
+import PhysicsObject from '@physics/PhysicsObject';
+import GameSprite from '@game/GameSprite';
 import { Pixi } from '@utils/tunnel';
 import { useWorldStore } from '@utils/world';
 
@@ -50,10 +51,26 @@ const Border = ({ config = {} }: { config?: BorderConfig }) => {
 
     return (
         <Pixi.In>
-            {!hideUp && <PhysicsObjectSprite id={'border-up'} initialRect={topBorder} sprite={{ tint: 0x333333, alpha: 0.5 }} />}
-            {!hideDown && <PhysicsObjectSprite id={'border-down'} initialRect={bottomBorder} sprite={{ tint: 0x333333, alpha: 0.5 }} />}
-            {!hideLeft && <PhysicsObjectSprite id={'border-left'} initialRect={leftBorder} sprite={{ tint: 0x333333, alpha: 0.5 }} />}
-            {!hideRight && <PhysicsObjectSprite id={'border-right'} initialRect={rightBorder} sprite={{ tint: 0x333333, alpha: 0.5 }} />}
+            {!hideUp && (
+                <PhysicsObject id={'border-up'} initialRect={topBorder}>
+                    <GameSprite sprite={{ tint: 0x333333, alpha: 0.5, width: topBorder.w, height: topBorder.h }} />
+                </PhysicsObject>
+            )}
+            {!hideDown && (
+                <PhysicsObject id={'border-down'} initialRect={bottomBorder}>
+                    <GameSprite sprite={{ tint: 0x333333, alpha: 0.5, width: bottomBorder.w, height: bottomBorder.h }} />
+                </PhysicsObject>
+            )}
+            {!hideLeft && (
+                <PhysicsObject id={'border-left'} initialRect={leftBorder}>
+                    <GameSprite sprite={{ tint: 0x333333, alpha: 0.5, width: leftBorder.w, height: leftBorder.h }} />
+                </PhysicsObject>
+            )}
+            {!hideRight && (
+                <PhysicsObject id={'border-right'} initialRect={rightBorder}>
+                    <GameSprite sprite={{ tint: 0x333333, alpha: 0.5, width: rightBorder.w, height: rightBorder.h }} />
+                </PhysicsObject>
+            )}
         </Pixi.In>
     );
 };

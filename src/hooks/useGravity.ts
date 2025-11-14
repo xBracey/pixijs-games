@@ -28,6 +28,8 @@ export const useGravity = (id: string, gravityValue: number, bounceValue = 0) =>
         const currentRect = world.getRect(id);
         const gravityState = gravityStateRef.current;
 
+        if (gravityState.velocityY === 0 && gravityState.isGrounded) return;
+
         // Apply gravity to velocity
         gravityState.velocityY += gravityValue;
 
