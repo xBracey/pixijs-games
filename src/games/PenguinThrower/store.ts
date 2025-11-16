@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 type GameStatus = 'menu' | 'throwing' | 'threw' | 'shop';
-export type UpgradeType = 'bounciness' | 'launchPower' | 'backpack';
+export type UpgradeType = 'bounciness' | 'launchPower' | 'backpack' | 'wings';
 
 const maxBounciness = 0.5;
 const maxLaunchPower = 3;
@@ -29,6 +29,8 @@ interface PenguinThrowerStore {
     launchNumber: number;
     increaseLaunchNumber: () => void;
     resetLaunchNumber: () => void;
+    hasWings: boolean;
+    setHasWings: (hasWings: boolean) => void;
 }
 
 const defaultGameValues: Partial<PenguinThrowerStore> = {
@@ -60,6 +62,7 @@ export const usePenguinThrowerStore = create<PenguinThrowerStore>()((set) => ({
     backpack: 0,
     maxBackpack,
     launchNumber: 0,
+    hasWings: false,
     setScore: (score: number | ((prev: number) => number)) =>
         set((state) => ({
             score: typeof score === 'function' ? score(state.score) : score
@@ -101,6 +104,8 @@ export const usePenguinThrowerStore = create<PenguinThrowerStore>()((set) => ({
                     updates.launchPower = Math.min(state.launchPower * 1.1, state.maxLaunchPower);
                 } else if (upgradeType === 'backpack') {
                     updates.backpack = Math.min(state.backpack + 1, state.maxBackpack);
+                } else if (upgradeType === 'wings') {
+                    updates.hasWings = true;
                 }
 
                 return { ...state, ...updates };
@@ -115,5 +120,6 @@ export const usePenguinThrowerStore = create<PenguinThrowerStore>()((set) => ({
     increaseLaunchNumber: () =>
         set((state) => ({
             launchNumber: state.launchNumber + 1
-        }))
+        })),
+    setHasWings: (hasWings: boolean) => set({ hasWings })
 }));

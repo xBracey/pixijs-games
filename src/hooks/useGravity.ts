@@ -81,6 +81,7 @@ export const useGravity = (id: string, gravityValue: number, bounceValue = 0) =>
     return {
         isGrounded: gravityStateRef.current.isGrounded,
         velocityY: gravityStateRef.current.velocityY,
-        jump
+        jump,
+        gravityStateRef
     };
 };

@@ -12,6 +12,8 @@ import GameSprite from '@game/GameSprite';
 
 interface IPenguin {}
 
+const wingStrength = 0.25;
+
 const id = 'penguin';
 
 const Penguin = ({}: IPenguin) => {
@@ -26,16 +28,21 @@ const Penguin = ({}: IPenguin) => {
         backpack,
         launchNumber,
         increaseLaunchNumber,
-        resetLaunchNumber
+        resetLaunchNumber,
+        hasWings
     } = usePenguinThrowerStore();
+
     const {
         map: { width: mapWidth }
     } = useWorldStore();
 
     const spriteRef = useRef<AnimatedSprite>(null);
     const eatingFishRef = useRef<AnimatedSprite>(null);
-    const { jump, isGrounded } = useGravity(id, 0.2, bounciness);
+    const wingingRef = useRef<AnimatedSprite>(null);
+    const { jump, isGrounded, gravityStateRef } = useGravity(id, 0.2, bounciness);
     const [isEating, setIsEating] = useState(false);
+    const [isWinging, setIsWinging] = useState(false);
+    const [hasWinged, setHasWinged] = useState(false);
 
     useEffect(() => {
         if (isGrounded) {
@@ -48,6 +55,10 @@ const Penguin = ({}: IPenguin) => {
 
     useTick(() => {
         setMapLeft((mapLeft) => Math.max(mapLeft + penguinSpeed, 0), mapWidth);
+
+        if (isWinging) {
+            gravityStateRef.current.velocityY += -wingStrength;
+        }
 
         if (isGrounded && penguinSpeed > 0) {
             if (penguinSpeed < 0.01) {
@@ -88,8 +99,29 @@ const Penguin = ({}: IPenguin) => {
         }
     }, [penguinSpeed, status]);
 
+    useEffect(() => {
+        const handleKeyPress = (event: KeyboardEvent) => {
+            if (event.code === 'Space' && hasWings && !isGrounded && !hasWinged) {
+                setIsWinging(true);
+                setHasWinged(true);
+                wingingRef.current?.gotoAndPlay(0);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyPress);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyPress);
+        };
+    }, [hasWings, isGrounded, hasWinged]);
+
     const onFinishedEating = () => {
         setIsEating(false);
+        setHasWinged(false);
+    };
+
+    const onFinishedWinging = () => {
+        setIsWinging(false);
     };
 
     return (
@@ -106,6 +138,16 @@ const Penguin = ({}: IPenguin) => {
                     autoplay={false}
                     ref={spriteRef}
                 />
+                {!!backpack && <GameSprite sprite={{ height: 64, width: 64 }} textureName="backpack" />}
+                {!!hasWings && (
+                    <AnimatedGameSprite
+                        animatedSprite={{ height: 64, width: 64, animationSpeed: 0.1, loop: false, onComplete: onFinishedWinging }}
+                        autoplay={false}
+                        textureProps={{ name: 'wings', imageNum: 5 }}
+                        useSpriteSheet
+                        ref={wingingRef}
+                    />
+                )}
                 <AnimatedGameSprite
                     animatedSprite={{
                         animationSpeed: 0.3,
@@ -121,7 +163,6 @@ const Penguin = ({}: IPenguin) => {
                     useSpriteSheet
                     ref={eatingFishRef}
                 />
-                {!!backpack && <GameSprite sprite={{ height: 64, width: 64 }} textureName="backpack" />}
             </PhysicsObject>
         </>
     );
