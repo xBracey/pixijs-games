@@ -6,7 +6,7 @@ import GameHeader from '@dom/GameHeader';
 import Button from '@dom/Button';
 import Border from '@game/Border';
 import Penguin from './components/Penguin';
-import Shop from './Shop';
+import Shop from './components/Shop';
 
 const PenguinThrower = () => {
     const { status, score, mapLeft, setStatus, money } = usePenguinThrowerStore();

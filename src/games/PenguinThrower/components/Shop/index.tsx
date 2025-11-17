@@ -1,5 +1,5 @@
-import Button from '../../../components/dom/Button';
-import { UpgradeType, usePenguinThrowerStore } from '../store';
+import Button from '@dom/Button';
+import { UpgradeType, usePenguinThrowerStore } from '../../store';
 
 interface Upgrade {
     id: UpgradeType;

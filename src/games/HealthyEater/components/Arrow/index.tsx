@@ -92,6 +92,7 @@ const Arrow = ({ id, x, y, speed, direction, onRemoveArrow }: IArrow) => {
                     tint: 'rgb(255, 0, 98)'
                 }}
                 textureProps={{ name: 'arrow', imageNum: 2 }}
+                useMultiImages
             />
         </PhysicsObject>
     );

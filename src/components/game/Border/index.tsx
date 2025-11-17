@@ -51,26 +51,10 @@ const Border = ({ config = {} }: { config?: BorderConfig }) => {
 
     return (
         <Pixi.In>
-            {!hideUp && (
-                <PhysicsObject id={'border-up'} initialRect={topBorder}>
-                    <GameSprite sprite={{ tint: 0x333333, alpha: 0.5, width: topBorder.w, height: topBorder.h }} />
-                </PhysicsObject>
-            )}
-            {!hideDown && (
-                <PhysicsObject id={'border-down'} initialRect={bottomBorder}>
-                    <GameSprite sprite={{ tint: 0x333333, alpha: 0.5, width: bottomBorder.w, height: bottomBorder.h }} />
-                </PhysicsObject>
-            )}
-            {!hideLeft && (
-                <PhysicsObject id={'border-left'} initialRect={leftBorder}>
-                    <GameSprite sprite={{ tint: 0x333333, alpha: 0.5, width: leftBorder.w, height: leftBorder.h }} />
-                </PhysicsObject>
-            )}
-            {!hideRight && (
-                <PhysicsObject id={'border-right'} initialRect={rightBorder}>
-                    <GameSprite sprite={{ tint: 0x333333, alpha: 0.5, width: rightBorder.w, height: rightBorder.h }} />
-                </PhysicsObject>
-            )}
+            {!hideUp && <PhysicsObject id={'border-up'} initialRect={topBorder} />}
+            {!hideDown && <PhysicsObject id={'border-down'} initialRect={bottomBorder} />}
+            {!hideLeft && <PhysicsObject id={'border-left'} initialRect={leftBorder} />}
+            {!hideRight && <PhysicsObject id={'border-right'} initialRect={rightBorder} />}
         </Pixi.In>
     );
 };

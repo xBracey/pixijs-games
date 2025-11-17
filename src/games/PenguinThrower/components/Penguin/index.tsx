@@ -134,7 +134,6 @@ const Penguin = ({}: IPenguin) => {
                         alpha: isEating ? 0 : 1
                     }}
                     textureProps={{ name: 'penguin', imageNum: 10 }}
-                    useSpriteSheet
                     autoplay={false}
                     ref={spriteRef}
                 />
@@ -144,7 +143,6 @@ const Penguin = ({}: IPenguin) => {
                         animatedSprite={{ height: 64, width: 64, animationSpeed: 0.1, loop: false, onComplete: onFinishedWinging }}
                         autoplay={false}
                         textureProps={{ name: 'wings', imageNum: 5 }}
-                        useSpriteSheet
                         ref={wingingRef}
                     />
                 )}
@@ -160,7 +158,6 @@ const Penguin = ({}: IPenguin) => {
                         imageNum: 16
                     }}
                     autoplay={false}
-                    useSpriteSheet
                     ref={eatingFishRef}
                 />
             </PhysicsObject>

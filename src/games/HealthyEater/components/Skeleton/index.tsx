@@ -55,6 +55,7 @@ const Skeleton = () => {
                         scale: { x: spriteTransform.scaleX, y: spriteTransform.scaleY }
                     }}
                     textureProps={{ name: 'skeleton', imageNum: 4 }}
+                    useMultiImages
                 />
             </PhysicsObject>
             <CenteredHTML rect={rect}>

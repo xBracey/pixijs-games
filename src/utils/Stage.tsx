@@ -35,18 +35,14 @@ export function Stage({ stageProps, children }: { stageProps: ComponentProps<typ
 
     const scale = useMemo(() => {
         return Math.min(width / map.width, height / map.height);
-    }, [width, height]);
+    }, [width, height, map]);
 
     useEffect(() => {
         const updateScreen = () => {
             if (!mainDivRef.current) return;
 
             const rect = mainDivRef.current.getBoundingClientRect();
-            setScreen({
-                scale,
-                x: rect.left,
-                y: rect.top
-            });
+            setScreen({ scale, x: rect.left, y: rect.top });
         };
 
         updateScreen();
@@ -92,7 +88,15 @@ export function Stage({ stageProps, children }: { stageProps: ComponentProps<typ
                     <HtmlBackground.Out />
                 </div>
 
-                <div className="absolute inset-0 z-20">
+                <div
+                    className="absolute inset-0 z-20"
+                    style={{
+                        height: `calc(100% * ${scale})`,
+                        width: `calc(100% * ${scale})`,
+                        scale: `calc(1/${scale})`,
+                        transformOrigin: 'top left'
+                    }}
+                >
                     {children}
                     {showDebug && <WorldOverlay />}
                     <Html.Out />

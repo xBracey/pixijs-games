@@ -1,0 +1,14 @@
+.ArcadeShooterContainer {
+    @apply relative h-full w-full;
+}
+
+.ArcadeShooterContainer h1,
+.ArcadeShooterContainer h2,
+.ArcadeShooterContainer h3,
+.ArcadeShooterContainer h4,
+.ArcadeShooterContainer h5,
+.ArcadeShooterContainer h6,
+.ArcadeShooterContainer div,
+.ArcadeShooterContainer p {
+    font-family: 'Silkscreen', 'Press Start 2P', cursive;
+}

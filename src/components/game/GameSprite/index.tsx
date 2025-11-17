@@ -7,7 +7,7 @@ extend({ Sprite });
 
 interface IPhysicsObject {
     sprite: Omit<PixiReactElementProps<typeof Sprite>, 'texture'>;
-    textureName?: string;
+    textureName: string;
 }
 
 const GameSprite = ({ sprite, textureName }: IPhysicsObject) => {

@@ -67,7 +67,6 @@ const LaunchArrow = ({ penguinId, onJump }: ILaunchArrow) => {
                     name: 'arrow',
                     imageNum: frameNum
                 }}
-                useSpriteSheet
                 reversable
                 ref={spriteRef}
             />

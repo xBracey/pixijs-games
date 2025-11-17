@@ -8,7 +8,7 @@ extend({ AnimatedSprite });
 interface IAnimation {
     animatedSprite: Omit<PixiReactElementProps<typeof AnimatedSprite>, 'textures'>;
     textureProps: { name: string; imageNum: number };
-    useSpriteSheet?: boolean;
+    useMultiImages?: boolean;
     autoplay?: boolean;
     ref?: RefObject<AnimatedSprite | null>;
     reversable?: boolean;
@@ -16,7 +16,7 @@ interface IAnimation {
 
 const size = 64;
 
-const Animation = ({ animatedSprite, textureProps, useSpriteSheet = false, autoplay = true, ref, reversable }: IAnimation) => {
+const Animation = ({ animatedSprite, textureProps, useMultiImages = false, autoplay = true, ref, reversable }: IAnimation) => {
     const spriteRef = ref ?? useRef<AnimatedSprite>(null);
     const { paused, activeGame } = useWorldStore();
 
@@ -26,50 +26,51 @@ const Animation = ({ animatedSprite, textureProps, useSpriteSheet = false, autop
         if (!textures) {
             const numbers = Array.from({ length: textureProps.imageNum }, (_, i) => i + 1);
 
-            if (useSpriteSheet) {
-                const imageName = `/assets/${activeGame}/${textureProps.name}.png`;
+            if (useMultiImages) {
+                const newTextures: Texture[] = [];
 
-                const spriteSheetData: SpritesheetData = {
-                    frames: Object.fromEntries(
-                        numbers.map((num) => [
-                            num.toString(),
-                            {
-                                frame: { x: (num - 1) * size, y: 0, w: size, h: size },
-                                spriteSourceSize: { x: 0, y: 0, w: size, h: size },
-                                sourceSize: { w: size, h: size },
-                                anchor: { x: size / 2, y: size / 2 }
-                            }
-                        ])
-                    ),
-                    meta: {
-                        image: imageName,
-                        format: 'RGBA8888',
-                        size: { w: size * textureProps.imageNum, h: size },
-                        scale: '1'
-                    }
-                };
+                for (let index = 0; index < numbers.length; index++) {
+                    const number = numbers[index];
 
-                const newTexture = await Assets.load(imageName);
+                    const newTexture = await Assets.load(`/assets/${activeGame}/${textureProps.name}/000${number}.png`);
+                    newTextures.push(newTexture);
+                }
 
-                const spritesheet = new Spritesheet(newTexture, spriteSheetData);
-
-                // Generate all the Textures asynchronously
-                const spriteSheetTextures = await spritesheet.parse();
-
-                setTextures(Object.values(spriteSheetTextures));
+                setTextures(newTextures);
                 return;
             }
 
-            const newTextures: Texture[] = [];
+            const imageName = `/assets/${activeGame}/${textureProps.name}.png`;
 
-            for (let index = 0; index < numbers.length; index++) {
-                const number = numbers[index];
+            const spriteSheetData: SpritesheetData = {
+                frames: Object.fromEntries(
+                    numbers.map((num) => [
+                        num.toString(),
+                        {
+                            frame: { x: (num - 1) * size, y: 0, w: size, h: size },
+                            spriteSourceSize: { x: 0, y: 0, w: size, h: size },
+                            sourceSize: { w: size, h: size },
+                            anchor: { x: size / 2, y: size / 2 }
+                        }
+                    ])
+                ),
+                meta: {
+                    image: imageName,
+                    format: 'RGBA8888',
+                    size: { w: size * textureProps.imageNum, h: size },
+                    scale: '1'
+                }
+            };
 
-                const newTexture = await Assets.load(`/assets/${activeGame}/${textureProps.name}/000${number}.png`);
-                newTextures.push(newTexture);
-            }
+            const newTexture = await Assets.load(imageName);
 
-            setTextures(newTextures);
+            const spritesheet = new Spritesheet(newTexture, spriteSheetData);
+
+            // Generate all the Textures asynchronously
+            const spriteSheetTextures = await spritesheet.parse();
+
+            setTextures(Object.values(spriteSheetTextures));
+            return;
         }
 
         if (autoplay) spriteRef.current?.play();

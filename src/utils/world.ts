@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import Bump, { IRect, World } from 'bump-ts';
 
-export type Game = 'healthy-eater' | 'penguin-thrower';
+export type Game = 'healthy-eater' | 'penguin-thrower' | 'arcade-shooter';
 
 interface IScreen {
     scale: number;
@@ -29,6 +29,8 @@ interface WorldStore {
     setMap: (screen: IMap) => void;
     activeGame?: Game;
     setActiveGame: (activeGame: Game) => void;
+    gridSize: number;
+    setGridSize: (gridSize: number) => void;
 }
 
 export const useWorldStore = create<WorldStore>((set, get) => ({
@@ -51,5 +53,7 @@ export const useWorldStore = create<WorldStore>((set, get) => ({
     setScreen: (screen: IScreen) => set({ screen }),
     map: { width: 1280, height: 720 },
     setMap: (map: IMap) => set({ map }),
-    setActiveGame: (activeGame: Game) => set({ activeGame })
+    setActiveGame: (activeGame: Game) => set({ activeGame }),
+    gridSize: 64,
+    setGridSize: (gridSize: number) => set({ gridSize, world: Bump.newWorld(gridSize) })
 }));
