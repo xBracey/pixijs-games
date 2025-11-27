@@ -1,8 +1,9 @@
 import GameSprite from '@game/GameSprite';
 import PhysicsObject from '@physics/PhysicsObject';
+import { Pixi } from '@utils/tunnel';
 import { useWorldStore } from '@utils/world';
 
-export const Player = () => {
+const Player = () => {
     const { map } = useWorldStore();
 
     const { width: mapWidth, height: mapHeight } = map;
@@ -19,3 +20,9 @@ export const Player = () => {
         </PhysicsObject>
     );
 };
+
+export default () => (
+    <Pixi.In>
+        <Player />
+    </Pixi.In>
+);

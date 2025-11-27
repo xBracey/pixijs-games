@@ -70,7 +70,7 @@ export function Stage({ stageProps, children }: { stageProps: ComponentProps<typ
     }, [scale, setScreen]);
 
     return (
-        <div className="flex max-h-screen items-center justify-center bg-gray-600 md:h-screen md:w-screen">
+        <div className="flex max-h-screen items-center justify-center overflow-hidden bg-gray-600 md:h-screen md:w-screen">
             <button
                 onClick={() => setShowDebug(!showDebug)}
                 className="fixed right-4 top-4 z-50 hidden rounded bg-blue-600 px-3 py-2 text-white transition-colors hover:bg-blue-700 md:block"

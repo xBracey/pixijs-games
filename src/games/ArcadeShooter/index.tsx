@@ -5,6 +5,7 @@ import GameHeader from '@dom/GameHeader';
 import { Button } from './components/Button';
 import Border from '@game/Border';
 import styles from './index.module.css';
+import Player from './components/Player';
 
 const ArcadeShooter = () => {
     const { status, score, level, lives, setStatus, resetGame } = useArcadeShooterStore();
@@ -66,6 +67,8 @@ const ArcadeShooter = () => {
                     <p>Lives: {lives}</p>
                 </div>
             )}
+
+            {inGame && <Player />}
 
             {status === 'gameOver' && (
                 <div className="absolute inset-0 z-20 flex items-center justify-center">
