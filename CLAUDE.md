@@ -77,9 +77,32 @@ Create a zustand store in `src/zustand/[game-name].ts`:
 
 ### 3. Create Route
 Create a lazy route in `src/routes/games/[game-name].lazy.tsx`:
-- Import the game component
+- Import the game component and required hooks
+- Set the active game in world store using `useWorldStore`
 - Use `createLazyFileRoute` with the game path
 - Export the route with the component
+
+**Important**: The route must set the active game in the world store:
+```tsx
+import { createLazyFileRoute } from '@tanstack/react-router';
+import TowerDefence from '../../games/TowerDefence';
+import { useWorldStore } from '@utils/world';
+import { useEffect } from 'react';
+
+const Index = () => {
+    const { setActiveGame } = useWorldStore();
+
+    useEffect(() => {
+        setActiveGame('game-name'); // Add to world store Game type
+    }, []);
+
+    return <TowerDefence />;
+};
+
+export const Route = createLazyFileRoute('/games/game-name')({
+    component: Index
+});
+```
 
 ### 4. Add Navigation Link
 Update `src/pages/Home/index.tsx`:
@@ -91,5 +114,11 @@ Include an `index.stories.tsx` file for component development:
 - Export default story configuration with title `Games / [GameName]`
 - Export `Default` story that renders the game component
 
+### 6. Update World Store Game Type
+Add the new game to the `Game` type in `src/utils/world.ts`:
+```tsx
+export type Game = 'healthy-eater' | 'penguin-thrower' | 'arcade-shooter' | 'tower-defence';
+```
+
 ### Example Implementation
-See `src/games/PenguinThrower/` and `src/zustand/penguin-thrower.ts` for a complete example following this pattern.
+See `src/games/TowerDefence/` and `src/games/TowerDefence/store.ts` for a complete example following this pattern, including proper route setup with active game management.

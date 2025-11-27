@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import Bump, { IRect, World } from 'bump-ts';
 
-export type Game = 'healthy-eater' | 'penguin-thrower' | 'arcade-shooter';
+export type Game = 'healthy-eater' | 'penguin-thrower' | 'arcade-shooter' | 'tower-defence';
 
 interface IScreen {
     scale: number;

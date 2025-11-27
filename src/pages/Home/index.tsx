@@ -17,6 +17,9 @@ export const Home = () => {
                     <Button>
                         <Link to="/games/arcade-shooter">Play Arcade Shooter</Link>
                     </Button>
+                    <Button>
+                        <Link to="/games/tower-defence">Play Tower Defence</Link>
+                    </Button>
                 </div>
             </div>
         </div>

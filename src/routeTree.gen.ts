@@ -13,6 +13,9 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRouteImport } from './routes/__root'
 
 const IndexLazyRouteImport = createFileRoute('/')()
+const GamesTowerDefenceLazyRouteImport = createFileRoute(
+  '/games/tower-defence',
+)()
 const GamesPenguinThrowerLazyRouteImport = createFileRoute(
   '/games/penguin-thrower',
 )()
@@ -28,6 +31,13 @@ const IndexLazyRoute = IndexLazyRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+const GamesTowerDefenceLazyRoute = GamesTowerDefenceLazyRouteImport.update({
+  id: '/games/tower-defence',
+  path: '/games/tower-defence',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() =>
+  import('./routes/games/tower-defence.lazy').then((d) => d.Route),
+)
 const GamesPenguinThrowerLazyRoute = GamesPenguinThrowerLazyRouteImport.update({
   id: '/games/penguin-thrower',
   path: '/games/penguin-thrower',
@@ -55,12 +65,14 @@ export interface FileRoutesByFullPath {
   '/games/arcade-shooter': typeof GamesArcadeShooterLazyRoute
   '/games/healthy-eater': typeof GamesHealthyEaterLazyRoute
   '/games/penguin-thrower': typeof GamesPenguinThrowerLazyRoute
+  '/games/tower-defence': typeof GamesTowerDefenceLazyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '/games/arcade-shooter': typeof GamesArcadeShooterLazyRoute
   '/games/healthy-eater': typeof GamesHealthyEaterLazyRoute
   '/games/penguin-thrower': typeof GamesPenguinThrowerLazyRoute
+  '/games/tower-defence': typeof GamesTowerDefenceLazyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -68,6 +80,7 @@ export interface FileRoutesById {
   '/games/arcade-shooter': typeof GamesArcadeShooterLazyRoute
   '/games/healthy-eater': typeof GamesHealthyEaterLazyRoute
   '/games/penguin-thrower': typeof GamesPenguinThrowerLazyRoute
+  '/games/tower-defence': typeof GamesTowerDefenceLazyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -76,18 +89,21 @@ export interface FileRouteTypes {
     | '/games/arcade-shooter'
     | '/games/healthy-eater'
     | '/games/penguin-thrower'
+    | '/games/tower-defence'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/games/arcade-shooter'
     | '/games/healthy-eater'
     | '/games/penguin-thrower'
+    | '/games/tower-defence'
   id:
     | '__root__'
     | '/'
     | '/games/arcade-shooter'
     | '/games/healthy-eater'
     | '/games/penguin-thrower'
+    | '/games/tower-defence'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -95,6 +111,7 @@ export interface RootRouteChildren {
   GamesArcadeShooterLazyRoute: typeof GamesArcadeShooterLazyRoute
   GamesHealthyEaterLazyRoute: typeof GamesHealthyEaterLazyRoute
   GamesPenguinThrowerLazyRoute: typeof GamesPenguinThrowerLazyRoute
+  GamesTowerDefenceLazyRoute: typeof GamesTowerDefenceLazyRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -104,6 +121,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/games/tower-defence': {
+      id: '/games/tower-defence'
+      path: '/games/tower-defence'
+      fullPath: '/games/tower-defence'
+      preLoaderRoute: typeof GamesTowerDefenceLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/games/penguin-thrower': {
@@ -135,6 +159,7 @@ const rootRouteChildren: RootRouteChildren = {
   GamesArcadeShooterLazyRoute: GamesArcadeShooterLazyRoute,
   GamesHealthyEaterLazyRoute: GamesHealthyEaterLazyRoute,
   GamesPenguinThrowerLazyRoute: GamesPenguinThrowerLazyRoute,
+  GamesTowerDefenceLazyRoute: GamesTowerDefenceLazyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
